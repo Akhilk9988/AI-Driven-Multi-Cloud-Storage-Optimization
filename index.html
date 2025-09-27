@@ -5,8 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Multi-Cloud Storage Optimizer</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS goes here */
+        :root {
+            --bg-color: #121212;
+            --card-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #00bcd4; /* Cyan/Teal for a futuristic feel */
+            --shadow-color: rgba(0, 188, 212, 0.4);
+            --error-color: #ff5252;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            background-color: var(--card-color);
+            padding: 20px 0;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 5px 10px;
+            border-bottom: 2px solid transparent;
+            transition: border-bottom 0.3s ease;
+        }
+
+        nav a:hover {
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        main {
+            padding: 40px 20px;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border-left: 5px solid var(--accent-color);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            color: var(--accent-color);
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            color: var(--text-color);
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+
+        .submit-btn {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 700;
+            transition: background-color 0.3s, transform 0.1s;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background-color: #00a0b2;
+            transform: translateY(-2px);
+        }
+
+        /* Output Section Styling */
+        .hidden {
+            display: none;
+        }
+
+        #resultContainer {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-box {
+            flex: 1;
+            padding: 20px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #444;
+        }
+
+        .metric-box h3 {
+            margin-top: 0;
+            color: var(--text-color);
+            font-size: 1em;
+        }
+
+        .metric-box p {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin: 5px 0 0 0;
+        }
+
+        .explanation {
+            border-top: 1px dashed #444;
+            padding-top: 20px;
+        }
+
+        .explanation h3 {
+            color: var(--text-color);
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>
@@ -22,13 +182,14 @@
         <section id="input" class="card">
             <h2>🔮 Predictive Input & Policy Engine</h2>
             <form id="optimizerForm">
-		<div class="form-group">
-    		<label for="cloudProvider">Target Clouds (Multi-Select)</label>
-    		<select id="cloudProvider" multiple required>
-        	<option value="AWS">Amazon Web Services (AWS)</option>
-        	<option value="Azure">Microsoft Azure</option>
-        	<option value="GCP" selected>Google Cloud Platform (GCP)</option>  </select>
-		</div>
+                <div class="form-group">
+                    <label for="cloudProvider">Target Clouds (Multi-Select)</label>
+                    <select id="cloudProvider" multiple required>
+                        <option value="AWS">Amazon Web Services (AWS)</option>
+                        <option value="Azure">Microsoft Azure</option>
+                        <option value="GCP" selected>Google Cloud Platform (GCP)</option> </select>
+                </div>
+
                 <div class="form-group">
                     <label for="dataSize">Data Volume (TB)</label>
                     <input type="number" id="dataSize" value="100" min="1" required>
@@ -58,239 +219,81 @@
             <div id="resultContainer">
                 <div class="metric-box">
                     <h3>Optimal Provider/Tier</h3>
-                    <p id="resultProvider"></p>
+                    <p id="resultProvider">---</p>
                 </div>
                 <div class="metric-box">
                     <h3>Projected Monthly Savings</h3>
-                    <p id="resultSavings"></p>
+                    <p id="resultSavings">---</p>
                 </div>
                 <div class="metric-box">
                     <h3>Projected Latency Reduction</h3>
-                    <p id="resultLatency"></p>
+                    <p id="resultLatency">---</p>
                 </div>
             </div>
             
             <div class="explanation">
                 <h3>Transparency & Explanation (XAI)</h3>
-                <p id="resultExplanation">The AI determined this choice by balancing the cost-performance trade-off against the strict **GDPR** compliance requirement for data residency. The predicted high-access pattern for 3-12 months ahead (Forecasting Future Needs [cite: 79]) was a key factor in selecting a warm storage tier over cold archival.</p>
+                <p id="resultExplanation">Run the optimization loop to generate an explainable decision.</p>
             </div>
         </section>
     </main>
+    
+    <script>
+        document.getElementById('optimizerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 1. Get Input Values
+            const dataSize = document.getElementById('dataSize').value;
+            const compliance = document.getElementById('compliance').value;
+            // Get all selected providers from the multi-select box
+            const providers = Array.from(document.getElementById('cloudProvider').selectedOptions).map(option => option.value);
+
+            // 2. Simple Simulation Logic (Based on your project metrics)
+            let optimalProvider = 'GCP'; 
+            let savings = '34.6%'; 
+            let latency = '≈40%';
+
+            // Custom logic for simulation based on inputs (feel free to expand this)
+            if (providers.length === 0) {
+                 optimalProvider = 'ERROR: Select a Provider';
+                 savings = '0%';
+                 latency = 'N/A';
+            } else if (dataSize > 500 && providers.includes('AWS')) {
+                optimalProvider = 'AWS (S3-IA Tier)'; 
+                savings = '34.0%';
+            } else if (compliance.toUpperCase().includes('HIPAA') && providers.includes('Azure')) {
+                optimalProvider = 'Azure (Cool Blob Storage)'; 
+                savings = '32.9%';
+            } else if (providers.includes('GCP')) {
+                optimalProvider = 'GCP (Cloud Storage Nearline)'; // Default optimized choice
+                savings = '34.6%';
+            } else {
+                optimalProvider = providers[0] + ' (Standard Tier)'; // Fallback to first selected
+                savings = '33.5%';
+            }
+            
+            // Use the metrics from your document
+            let averageSavings = savings; // Based on your project results
+            let latencyReduction = '≈40%'; // Based on Latency Improvement ≈40%
+
+            // 3. Display Results
+            document.getElementById('resultProvider').textContent = optimalProvider;
+            document.getElementById('resultSavings').textContent = averageSavings;
+            document.getElementById('resultLatency').textContent = latencyReduction;
+
+            // 4. Update Explainable AI (XAI) text
+            document.getElementById('resultExplanation').innerHTML = `
+                The AI determined this choice by balancing the **cost** (${averageSavings}) and **performance** (${latencyReduction} latency reduction) 
+                trade-offs against the strict **${compliance.toUpperCase()}** compliance requirement. 
+                The predictive model (Forecasting Future Needs) identified a moderate access pattern for the next 3-12 months, 
+                recommending the **${optimalProvider}** tier to maximize savings while maintaining performance. 
+                This decision achieves **$\geq 95\%$** automation in resource selection.
+            `;
+
+            // 5. Show the Output section and scroll
+            document.getElementById('output').classList.remove('hidden');
+            document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-:root {
-    --bg-color: #121212;
-    --card-color: #1e1e1e;
-    --text-color: #e0e0e0;
-    --accent-color: #00bcd4; /* Cyan/Teal for a futuristic feel */
-    --shadow-color: rgba(0, 188, 212, 0.4);
-    --error-color: #ff5252;
-}
-
-body {
-    font-family: 'Roboto Mono', monospace;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-}
-
-header {
-    width: 100%;
-    background-color: var(--card-color);
-    padding: 20px 0;
-    box-shadow: 0 4px 12px var(--shadow-color);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.logo {
-    font-size: 1.5em;
-    font-weight: 700;
-    color: var(--accent-color);
-}
-
-nav a {
-    color: var(--text-color);
-    text-decoration: none;
-    margin-left: 20px;
-    padding: 5px 10px;
-    border-bottom: 2px solid transparent;
-    transition: border-bottom 0.3s ease;
-}
-
-nav a:hover {
-    border-bottom: 2px solid var(--accent-color);
-}
-
-main {
-    padding: 40px 20px;
-    width: 90%;
-    max-width: 1000px;
-}
-
-.card {
-    background-color: var(--card-color);
-    padding: 30px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    border-left: 5px solid var(--accent-color);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-h2 {
-    color: var(--accent-color);
-    border-bottom: 1px solid #333;
-    padding-bottom: 10px;
-    margin-top: 0;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 700;
-    color: var(--accent-color);
-}
-
-input[type="number"], input[type="text"], select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #444;
-    border-radius: 5px;
-    background-color: #2a2a2a;
-    color: var(--text-color);
-    box-sizing: border-box;
-    transition: border-color 0.3s;
-}
-
-input:focus, select:focus {
-    border-color: var(--accent-color);
-    outline: none;
-}
-
-.submit-btn {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
-    border: none;
-    padding: 15px 30px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 700;
-    transition: background-color 0.3s, transform 0.1s;
-    letter-spacing: 1px;
-}
-
-.submit-btn:hover {
-    background-color: #00a0b2;
-    transform: translateY(-2px);
-}
-
-/* Output Section Styling */
-.hidden {
-    display: none;
-}
-
-#resultContainer {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.metric-box {
-    flex: 1;
-    padding: 20px;
-    background-color: #2a2a2a;
-    border-radius: 8px;
-    text-align: center;
-    border: 1px solid #444;
-}
-
-.metric-box h3 {
-    margin-top: 0;
-    color: var(--text-color);
-    font-size: 1em;
-}
-
-.metric-box p {
-    font-size: 2.5em;
-    font-weight: 700;
-    color: var(--accent-color);
-    margin: 5px 0 0 0;
-}
-
-.explanation {
-    border-top: 1px dashed #444;
-    padding-top: 20px;
-}
-
-.explanation h3 {
-    color: var(--text-color);
-    font-size: 1.2em;
-}
-
-<script>
-    document.getElementById('optimizerForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // 1. Get Input Values
-        const dataSize = document.getElementById('dataSize').value;
-        const compliance = document.getElementById('compliance').value;
-        const providers = Array.from(document.getElementById('cloudProvider').selectedOptions).map(option => option.value);
-
-        // 2. Simple Simulation Logic (Replace with actual API call in a real project)
-        let optimalProvider = 'GCP'; 
-        let savings = '34.6%'; 
-        let latency = '≈40%';
-
-        if (dataSize > 500 && providers.includes('AWS')) {
-            optimalProvider = 'AWS'; // Simulating preference for large scale
-            savings = '34.0%';
-        } else if (compliance.toUpperCase().includes('HIPAA') && providers.includes('Azure')) {
-            optimalProvider = 'Azure'; // Simulating compliance-driven choice
-            savings = '32.9%';
-        } else if (providers.includes('GCP')) {
-            optimalProvider = 'GCP'; // Default/most optimized for this example
-            savings = '34.6%';
-        } else {
-            optimalProvider = 'ERROR: No Provider Selected';
-            savings = '0%';
-        }
-
-        // Use the metrics from your document
-        let averageSavings = '≈34%'; // Based on ≈34% Average Monthly Savings 
-        let latencyReduction = '≈40%'; // Based on Latency Improvement ≈40% 
-
-        // 3. Display Results (Update the hidden section)
-        document.getElementById('resultProvider').textContent = optimalProvider + ' (Standard Tier)';
-        document.getElementById('resultSavings').textContent = averageSavings;
-        document.getElementById('resultLatency').textContent = latencyReduction;
-        document.getElementById('resultExplanation').innerHTML = `
-            The AI determined this choice by balancing the cost-performance trade-off against the strict 
-            **${compliance.toUpperCase()}** compliance requirement for data residency. 
-            The predicted high-access pattern for 3-12 months ahead (Forecasting Future Needs [cite: 79]) 
-            was a key factor in selecting a **warm storage tier** over cold archival, yielding **${averageSavings}** in savings and **${latencyReduction}** latency reduction[cite: 27, 29]. 
-            This represents an **Automated Decision** (${dataSize} TB workload)[cite: 33, 34].
-        `;
-
-        // 4. Show the Output section
-        document.getElementById('output').classList.remove('hidden');
-        
-        // Scroll to results
-        document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
-    });
-</script>
