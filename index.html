@@ -201,6 +201,8 @@
             color: var(--success-color);
             margin: 5px 0 0 0;
             text-shadow: 0 0 5px rgba(105, 240, 174, 0.5);
+            /* Ensure the text is readable, even with the new symbol */
+            line-height: 1.2; 
         }
         
         .anomaly-alert {
@@ -417,7 +419,8 @@
                 </div>
                 <div class="metric-box">
                     <h3>Automation Level</h3>
-                    <p id="resultAutomation">$\ge 95\%$</p>
+                    <!-- FIX 1: Changed LaTeX to HTML entity -->
+                    <p id="resultAutomation">&ge; 95%</p>
                 </div>
             </div>
             
@@ -427,21 +430,25 @@
                 <div class="chart-container">
                     <div class="bar">
                         <div class="bar-fill" id="bar-original" style="height: 100%;"></div>
+                        <!-- FIX 2: Removed LaTeX $ symbols -->
                         <span class="bar-label" id="label-original">$8,500</span>
                         <span class="bar-title">Baseline Cost</span>
                     </div>
                     <div class="bar">
                         <div class="bar-fill" id="bar-optimized" style="height: 65%;"></div>
+                        <!-- FIX 2: Removed LaTeX $ symbols -->
                         <span class="bar-label" id="label-optimized">$5,550</span>
                         <span class="bar-title">Optimized Cost</span>
                     </div>
                     <div class="bar">
                         <div class="bar-fill" id="bar-egress" style="height: 15%;"></div>
+                        <!-- FIX 2: Removed LaTeX $ symbols -->
                         <span class="bar-label" id="label-egress">$300</span>
                         <span class="bar-title">Egress Fees (Predicted)</span>
                     </div>
                     <div class="bar">
                         <div class="bar-fill" id="bar-retrieval" style="height: 5%;"></div>
+                        <!-- FIX 2: Removed LaTeX $ symbols -->
                         <span class="bar-label" id="label-retrieval">$100</span>
                         <span class="bar-title">Retrieval Fees</span>
                     </div>
@@ -460,6 +467,7 @@
     
     <!-- 3. JAVASCRIPT LOGIC -->
     <script>
+        // Function to handle form submission and optimization simulation
         document.getElementById('optimizerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -495,6 +503,14 @@
                 optimalProvider = 'OCI (Archival Storage)'; 
                 savingsPercent = 35.5;
                 explanationDetail = 'Predicted high archival need over 12 months favored a deep archive tier.';
+            } else if (providers.includes('AliCloud')) {
+                optimalProvider = 'AliCloud (Low Frequency Access)'; 
+                savingsPercent = 33.8;
+                explanationDetail = 'Cost optimization for APAC region latency favored this provider.';
+            } else if (providers.includes('IBMCloud')) {
+                optimalProvider = 'IBM Cloud (Cloud Object Storage)'; 
+                savingsPercent = 32.5;
+                explanationDetail = 'Compliance requirement for financial data favored this provider.';
             } else {
                 // Default or GCP fallback
                 optimalProvider = 'GCP (Cloud Storage Nearline)'; 
@@ -506,8 +522,10 @@
             if (injectAnomaly) {
                 anomalyDetected = true;
                 // Proactively shift to a warmer, more expensive tier to prevent huge penalty costs
-                if (optimalProvider.includes('Nearline') || optimalProvider.includes('Archival')) {
-                    optimalProvider = optimalProvider.replace(/Nearline|Archival|Cool/g, 'Standard/Hot');
+                if (optimalProvider.includes('Nearline') || optimalProvider.includes('Archival') || optimalProvider.includes('Cool')) {
+                    // Update tier but keep provider name
+                    const providerName = optimalProvider.split('(')[0].trim();
+                    optimalProvider = `${providerName} (Standard/Hot Storage)`;
                     savingsPercent = Math.max(25, savingsPercent - 5); // Reduce savings but still save
                     explanationDetail = `ANOMALY OVERRIDE: Proactively shifted to **${optimalProvider}** (Warmer Tier) to mitigate ${forecastWindow}-month access spike predicted by the AI.`;
                 } else {
