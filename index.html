@@ -4,19 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Multi-Cloud Storage Optimizer</title>
-    <!-- 1. Google Font for Futuristic Look -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- 2. CSS STYLING (Enhanced for Structure and Consistency) -->
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Orbitron for titles, Roboto Mono for data -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto+Mono:wght=400;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for the forecast graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
     <style>
         :root {
-            --bg-color: #0d0d12; 
-            --card-color: #1e1e2c; 
-            --text-color: #e0f7fa; 
-            --accent-color: #00e5ff; /* Neon Cyan (Success) */
+            --bg-color: #0d0d12;
+            --card-color: #1e1e2c;
+            --text-color: #e0f7fa;
+            --accent-color: #00e5ff; /* Neon Cyan */
             --highlight-color: #82b1ff; /* Light blue glow */
-            --error-color: #ff3d00; /* Neon red (Failure) */
+            --error-color: #ff3d00; /* Neon red */
             --success-color: #69f0ae; /* Neon green */
+            
+            /* NEW CHART COLORS for Professional & Futuristic Look */
+            --chart-actual-color: #00e5ff; /* Bright Cyan (Hex code) */
+            --chart-predicted-color: #c084fc; /* Vibrant Violet (Hex code) */
+            
             --glow-filter: 0 0 8px var(--accent-color);
         }
 
@@ -24,913 +32,718 @@
             font-family: 'Roboto Mono', monospace;
             background-color: var(--bg-color);
             color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             min-height: 100vh;
         }
 
-        header {
-            width: 100%;
+        /* Utility classes for the futuristic/neon look */
+        .card-futuristic {
             background-color: var(--card-color);
-            padding: 20px 0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), var(--glow-filter);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8em;
-            font-weight: 900;
-            color: var(--accent-color);
-            text-shadow: var(--glow-filter);
-            letter-spacing: 2px;
-        }
-
-        main {
-            padding: 40px 20px;
-            width: 95%;
-            max-width: 1200px;
-        }
-
-        .card {
-            background-color: var(--card-color);
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 12px;
             border: 1px solid #333;
             box-shadow: var(--glow-filter);
         }
-
-        h2 {
+        .header-futuristic {
             font-family: 'Orbitron', sans-serif;
             color: var(--accent-color);
-            border-bottom: 2px solid #333;
-            padding-bottom: 15px;
-            margin-top: 0;
-            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
         }
-        
-        /* Input & Form Styling */
-        .input-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 5px; 
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 700;
-            color: var(--highlight-color);
-            font-size: 0.9em;
-        }
-        
-        input[type="number"], input[type="text"], select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #444;
-            border-radius: 6px;
-            background-color: #2a2a38;
-            color: var(--text-color);
-            box-sizing: border-box;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            font-family: 'Roboto Mono', monospace;
-        }
-
-        input:focus, select:focus {
+        .input-futuristic:focus {
             border-color: var(--accent-color);
             outline: none;
             box-shadow: 0 0 5px var(--accent-color);
         }
 
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            color: var(--text-color);
-            font-size: 0.9em;
-            margin-top: 10px;
-            height: 100%;
+        /* --- Custom Styles for Graph Nodes (Dependency Modal) --- */
+        .node {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .node:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        }
+        .graph-line {
+            stroke: #00e5ff; /* Neon Cyan */
+            stroke-width: 2;
+            transition: stroke-width 0.3s;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #82b1ff; /* highlight-color */
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background-color: #1a1a24;
         }
 
-        .checkbox-group input {
-            width: 18px;
-            height: 18px;
-            margin-right: 10px;
-            background-color: #2a2a38;
-            border: 1px solid var(--highlight-color);
-        }
-
-        .submit-btn {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            border: none;
-            padding: 15px 30px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: 700;
-            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
-            letter-spacing: 1px;
-            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            background-color: var(--highlight-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(130, 177, 255, 0.6);
-        }
-        
-        .submit-btn:disabled {
-            background-color: #555;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-
-        /* Output Metrics Styling */
-        .hidden {
-            display: none;
-        }
-
-        /* Constraint Violation Alert (New) */
-        .violation-alert {
-            background-color: #2c1a1a; /* Darker red background */
-            border: 2px solid var(--error-color);
-            color: var(--text-color);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px; /* Space above metrics */
-            font-weight: 700;
-            box-shadow: 0 0 15px var(--error-color);
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .violation-alert p:first-child {
-            font-size: 1.1em;
-            color: var(--error-color);
-        }
-
-        #resultContainer {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
+        /* Metrics boxes specific styling */
         .metric-box {
-            flex: 1;
-            min-width: 200px;
-            padding: 20px;
-            background-color: #2a2a38;
-            border-radius: 8px;
-            text-align: center;
             border: 1px solid var(--accent-color);
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
-            transition: all 0.3s;
         }
-
-        .metric-box h3 {
-            margin-top: 0;
-            color: var(--highlight-color);
-            font-size: 1em;
+        .metric-value {
             font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-        }
-
-        .metric-box p {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8em; 
-            font-weight: 700;
-            color: var(--success-color); /* Default Success Color */
-            margin: 5px 0 0 0;
             text-shadow: 0 0 5px rgba(105, 240, 174, 0.5);
-            line-height: 1.2; 
         }
-        
-        .anomaly-alert {
-            background-color: #3b2a38;
-            border: 2px solid var(--error-color);
-            color: var(--error-color);
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
-            font-weight: 700;
-            box-shadow: 0 0 10px var(--error-color);
+
+        /* Toggle Switch Styling */
+        .toggle-switch input[type="radio"] {
             display: none;
         }
-
-        /* Cost Breakdown Visualization */
-        .cost-breakdown {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px dashed #444;
-        }
-        
-        .cost-breakdown h3 {
-            color: var(--highlight-color);
-            font-family: 'Orbitron', sans-serif;
-            margin-bottom: 25px;
-        }
-
-        .chart-container {
-            display: flex;
-            height: 150px;
-            gap: 10px;
-            margin-top: 15px;
-            justify-content: space-around;
-        }
-
-        .bar {
-            flex: 1;
-            max-width: 150px;
-            background-color: #4a4a58;
-            display: flex;
-            flex-direction: column-reverse;
-            align-items: center;
-            border-radius: 4px 4px 0 0;
-            position: relative;
-        }
-        
-        .bar-fill {
-            width: 100%;
-            background-color: var(--accent-color);
-            transition: height 1s ease-out;
-            position: relative;
-        }
-
-        .bar-label {
-            position: absolute;
-            top: -20px;
-            font-size: 0.8em;
-            color: var(--text-color);
-        }
-        
-        .bar-title {
-            position: absolute;
-            bottom: -20px;
-            font-size: 0.7em;
-            color: var(--highlight-color);
-            text-align: center;
-        }
-        
-        /* Future Prediction Graph Styling */
-        #futureGraphContainer {
-            margin-top: 50px;
-            padding: 20px;
-            border: 1px solid #333;
-            border-radius: 8px;
-            background-color: #1a1a24;
-            position: relative;
-        }
-
-        #futureGraph {
-            width: 100%;
-            height: 250px;
-            border: 1px solid #333;
-            background: linear-gradient(to top, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
-        }
-
-        .chart-legend {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
-            font-size: 0.8em;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-        }
-
-        .legend-color {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-        
-        /* Provisioning Button */
-        .provision-btn {
-            background-color: var(--success-color);
-            color: var(--bg-color);
-            border: none;
-            padding: 15px 30px;
-            border-radius: 6px;
+        .toggle-label {
+            padding: 0.5rem 1rem;
             cursor: pointer;
-            font-size: 1em;
-            font-weight: 700;
-            transition: all 0.3s;
-            box-shadow: 0 0 10px rgba(105, 240, 174, 0.7);
-            margin-top: 30px;
-            width: 100%;
-        }
-
-        .provision-btn:hover:not(:disabled) {
-            background-color: #00bfa5;
-            transform: scale(1.02);
-        }
-        
-        .provision-btn:disabled {
-            background-color: #555;
-            box-shadow: 0 0 10px rgba(255, 61, 0, 0.7);
-            cursor: not-allowed;
-        }
-
-        /* Modal for Provisioning Simulation */
-        .modal {
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #1e1e2c;
-            padding: 40px;
-            border-radius: 10px;
-            border: 2px solid var(--success-color);
-            box-shadow: 0 0 25px var(--success-color);
-            text-align: center;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .modal-content h3 {
-            color: var(--success-color);
-        }
-
-        .modal-content p {
-            color: var(--text-color);
-            margin-bottom: 20px;
-            font-family: 'Roboto Mono', monospace;
-        }
-        
-        /* --- CHAT BOT STYLES (Kept Minimal for brevity) --- */
-        #bot-container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 900;
-        }
-        #bot-toggle {
-            width: 60px; height: 60px; border-radius: 50%; background-color: var(--accent-color); color: var(--bg-color); border: none; cursor: pointer; font-size: 1.5em; box-shadow: var(--glow-filter), 0 5px 15px rgba(0, 0, 0, 0.5); transition: transform 0.3s; font-family: 'Orbitron', sans-serif; font-weight: 900;
-        }
-        #bot-toggle:hover { transform: scale(1.1); }
-        #bot-window {
-            width: 300px; height: 400px; background-color: var(--card-color); border-radius: 10px; box-shadow: var(--glow-filter); border: 2px solid var(--accent-color); display: flex; flex-direction: column; position: absolute; bottom: 75px; right: 0; overflow: hidden; display: none;
-        }
-        #bot-header {
-            background-color: var(--accent-color); color: var(--bg-color); padding: 10px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.1em; text-align: center;
-        }
-        #bot-messages {
-            flex-grow: 1; padding: 15px; overflow-y: auto; border-bottom: 1px solid #333;
-        }
-        .bot-message, .user-query {
-            margin-bottom: 10px; padding: 8px 12px; border-radius: 15px; max-width: 80%; font-size: 0.9em; line-height: 1.4;
-        }
-        .bot-message {
-            background-color: #333; color: var(--text-color); align-self: flex-start; border-bottom-left-radius: 5px;
-        }
-        .user-query {
-            background-color: var(--accent-color); color: var(--bg-color); align-self: flex-end; margin-left: auto; border-bottom-right-radius: 5px;
-        }
-        .suggestion-list {
-            list-style: none; padding: 0; margin: 10px 0; display: flex; flex-direction: column; gap: 5px;
-        }
-        .suggestion-list button {
-            background: none; border: 1px solid var(--highlight-color); color: var(--highlight-color); padding: 8px; border-radius: 6px; cursor: pointer; text-align: left; font-size: 0.85em; transition: background-color 0.2s; font-family: 'Roboto Mono', monospace;
-        }
-        .suggestion-list button:hover {
+            border-radius: 9999px; /* Fully rounded */
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 0.875rem; /* text-sm */
             background-color: #2a2a38;
+            color: #9ca3af; /* Gray text */
+            border: 1px solid #374151;
         }
-
+        .toggle-switch input[type="radio"]:checked + .toggle-label {
+            background-color: var(--accent-color);
+            color: var(--bg-color); /* Dark text on neon */
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+        }
     </style>
 </head>
-<body>
-    <div id="provisionModal" class="modal">
-        <div class="modal-content">
-            <h3>&#9889; Provisioning Simulation Complete &#9889;</h3>
-            <p id="modal-text">IaC Automation successful. Storage solution provisioned to the optimal tier.</p>
-            <button onclick="document.getElementById('provisionModal').style.display='none'" class="submit-btn" style="background-color: var(--accent-color); width: auto;">Close Terminal</button>
+<body class="p-4 md:p-8">
+
+    <!-- Modal for Dependency Graph -->
+    <div id="dependencyModal" class="fixed inset-0 bg-gray-900 bg-opacity-90 z-50 hidden flex items-center justify-center p-4">
+        <div class="card-futuristic bg-indigo-900/10 w-full max-w-5xl max-h-[95vh] rounded-xl shadow-2xl flex flex-col border-indigo-500/50">
+            <div class="p-6 border-b border-indigo-500/50 flex justify-between items-center bg-[#181824]">
+                <h2 class="text-2xl font-bold header-futuristic">Graph-Based Dependencies</h2>
+                <button id="closeDependencyModalBtn" class="text-gray-400 hover:text-white transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="p-6 flex-grow overflow-y-auto custom-scrollbar">
+                <p class="text-sm text-gray-400 mb-4">
+                    The AI models workload topology to ensure cross-cloud connections (like AWS to Azure DB) meet latency and security constraints before making tiering decisions.
+                </p>
+
+                <!-- Dependency Graph (Simplified SVG/Grid Layout) -->
+                <div class="relative w-full h-[500px] bg-[#1a1a24] rounded-lg p-6 flex flex-col justify-between items-center border border-indigo-700/50">
+
+                    <!-- Center/Core Node -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <div class="node bg-indigo-600 text-white p-4 rounded-full w-28 h-28 flex items-center justify-center text-center font-bold shadow-lg ring-4 ring-indigo-300">
+                            AI Optimizer Core
+                        </div>
+                    </div>
+
+                    <!-- Cloud Service Nodes -->
+                    <div class="flex justify-around w-full mt-4">
+                        <div class="node w-32 h-20 bg-[#2a2a38] border border-gray-700 shadow-md rounded-lg flex flex-col items-center justify-center p-2 text-center text-sm font-medium text-gray-200 hover:border-indigo-500">
+                            <span class="text-green-400 font-bold">GCP</span>
+                            Data Lake (Archive)
+                        </div>
+                        <div class="node w-32 h-20 bg-[#2a2a38] border border-gray-700 shadow-md rounded-lg flex flex-col items-center justify-center p-2 text-center text-sm font-medium text-gray-200 hover:border-indigo-500">
+                            <span class="text-yellow-400 font-bold">AWS</span>
+                            Edge Inference
+                        </div>
+                    </div>
+
+                    <!-- Bottom Services Nodes -->
+                    <div class="flex justify-around w-full mb-4">
+                        <div class="node w-32 h-20 bg-[#2a2a38] border border-gray-700 shadow-md rounded-lg flex flex-col items-center justify-center p-2 text-center text-sm font-medium text-gray-200 hover:border-indigo-500">
+                            <span class="text-blue-400 font-bold">AZURE</span>
+                            Policy DB
+                        </div>
+                        <div class="node w-32 h-20 bg-[#2a2a38] border border-gray-700 shadow-md rounded-lg flex flex-col items-center justify-center p-2 text-center text-sm font-medium text-gray-200 hover:border-indigo-500">
+                            K8s Operator
+                            (Workload)
+                        </div>
+                    </div>
+
+                    <!-- Lines (Simulated Connections using SVG) -->
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                        <!-- Line from GCP Node (Top Left) to Center Core -->
+                        <line x1="20%" y1="20%" x2="50%" y2="50%" class="graph-line" />
+                        <!-- Line from AWS Node (Top Right) to Center Core -->
+                        <line x1="80%" y1="20%" x2="50%" y2="50%" class="graph-line" />
+                        <!-- Line from Azure Node (Bottom Left) to Center Core -->
+                        <line x1="20%" y1="80%" x2="50%" y2="50%" class="graph-line" />
+                        <!-- Line from K8s Node (Bottom Right) to Center Core -->
+                        <line x1="80%" y1="80%" x2="50%" y2="50%" class="graph-line" />
+                        <!-- Line between AWS (Top Right) and K8s (Bottom Right) -->
+                        <line x1="80%" y1="20%" x2="80%" y2="80%" stroke="#facc15" stroke-width="2" stroke-dasharray="4 2" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-indigo-500/50 bg-[#181824] flex justify-end">
+                <button onclick="closeDependencyModal()"
+                    class="px-4 py-2 bg-gray-700 text-gray-200 font-medium rounded-lg hover:bg-gray-600 transition">
+                    Close Diagram
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for Provisioning Simulation -->
+    <div id="provisionModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-indigo-900/10 card-futuristic p-10 rounded-xl text-center border-green-500/50 shadow-green-500/40">
+            <h3 class="text-2xl font-bold text-success-color mb-4" style="color: var(--success-color); font-family: 'Orbitron', sans-serif;">&#9889; Provisioning Simulation Complete &#9889;</h3>
+            <p id="modal-text" class="text-gray-300 mb-6">IaC Automation successful. Storage solution provisioned to the optimal tier.</p>
+            <button onclick="document.getElementById('provisionModal').style.display='none'" class="px-6 py-2 bg-green-500 text-gray-900 font-semibold rounded-lg hover:bg-green-400 transition">Close Terminal</button>
         </div>
     </div>
 
-    <header>
-        <div class="logo">AI-Driven Storage Optimization</div>
+    <!-- Main Content Area -->
+    <header class="w-full mb-8">
+        <div class="logo header-futuristic text-4xl font-black text-center pt-4 pb-2">AI-Driven Storage Optimization</div>
+        <p class="text-center text-gray-400 text-sm">Unified Cost, Latency, and Compliance Engine</p>
     </header>
 
-    <main>
-        <section id="input" class="card">
-            <h2>🔮 Predictive Input & Policy Engine</h2>
+    <main class="max-w-6xl mx-auto">
+        
+        <!-- Input Section -->
+        <section id="input" class="card-futuristic p-6 md:p-8 rounded-xl mb-8">
+            <h2 class="text-xl md:text-2xl mb-6 header-futuristic border-b border-indigo-700 pb-3">🔮 Predictive Input & Policy Engine</h2>
             <form id="optimizerForm">
-                <div class="input-grid">
-                    <!-- Target Cloud removal: The AI now selects the optimal cloud internally -->
-
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="form-group">
-                        <label for="dataSize">Data Volume (TB)</label>
-                        <input type="number" id="dataSize" value="1000" min="1" required>
+                        <label for="dataSize" class="block mb-2 text-highlight-color font-bold" style="color: var(--highlight-color);">Data Volume (TB)</label>
+                        <input type="number" id="dataSize" value="100" min="1" required class="w-full p-3 rounded-lg bg-[#2a2a38] border border-[#444] text-text-color input-futuristic">
                     </div>
 
                     <div class="form-group">
-                        <label for="accessFrequency">Access Frequency (Reads/Month, in Millions)</label>
-                        <input type="number" id="accessFrequency" value="50" min="1" required>
+                        <label for="accessFrequency" class="block mb-2 text-highlight-color font-bold" style="color: var(--highlight-color);">Access Frequency (Reads/Month, in Millions)</label>
+                        <input type="number" id="accessFrequency" value="50" min="1" required class="w-full p-3 rounded-lg bg-[#2a2a38] border border-[#444] text-text-color input-futuristic">
                     </div>
 
                     <div class="form-group">
-                        <label for="forecastWindow">Forecasting Horizon (Months)</label>
-                        <input type="number" id="forecastWindow" value="24" min="1" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="compliance">Compliance Policy (e.g., GDPR, HIPAA)</label>
-                        <input type="text" id="compliance" value="GDPR" placeholder="e.g., GDPR, HIPAA" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="budget">Max Monthly Budget ($)</label>
-                        <input type="number" id="budget" value="10000" min="100" required>
+                        <label for="forecastWindow" class="block mb-2 text-highlight-color font-bold" style="color: var(--highlight-color);">Forecasting Horizon (Months)</label>
+                        <input type="number" id="forecastWindow" value="24" min="1" required class="w-full p-3 rounded-lg bg-[#2a2a38] border border-[#444] text-text-color input-futuristic">
                     </div>
 
-                    <!-- Anomaly Detection Checkbox -->
-                    <div class="form-group" style="grid-column: span 1 / auto;">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="injectAnomaly">
-                            <label for="injectAnomaly" style="color: var(--error-color);">Simulate Access Anomaly Detection?</label>
-                        </div>
+                    <div class="form-group">
+                        <label for="compliance" class="block mb-2 text-highlight-color font-bold" style="color: var(--highlight-color);">Compliance Policy (e.g., GDPR, HIPAA)</label>
+                        <input type="text" id="compliance" value="GDPR" placeholder="e.g., GDPR, HIPAA" required class="w-full p-3 rounded-lg bg-[#2a2a38] border border-[#444] text-text-color input-futuristic">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget" class="block mb-2 text-highlight-color font-bold" style="color: var(--highlight-color);">Max Monthly Budget ($)</label>
+                        <input type="number" id="budget" value="5000" min="100" required class="w-full p-3 rounded-lg bg-[#2a2a38] border border-[#444] text-text-color input-futuristic">
+                    </div>
+
+                    <div class="form-group flex items-center pt-8">
+                        <input type="checkbox" id="injectAnomaly" class="w-5 h-5 mr-3 rounded text-error-color focus:ring-error-color bg-[#2a2a38] border border-[#444]">
+                        <label for="injectAnomaly" class="text-error-color font-bold">Simulate Access Anomaly Detection?</label>
                     </div>
                 </div>
 
-                <button type="submit" class="submit-btn">Run AI Optimization Loop →</button>
+                <button type="submit" class="w-full mt-8 px-6 py-3 bg-accent-color text-bg-color font-bold rounded-lg shadow-lg hover:bg-highlight-color transition submit-btn" style="box-shadow: 0 0 15px var(--accent-color);">
+                    Run AI Optimization Loop →
+                </button>
             </form>
         </section>
 
-        <section id="output" class="card hidden">
-            <h2><span style="color: var(--success-color);">&#10003;</span> Optimization Recommendation</h2>
-            
-            <!-- Constraint Violation Alert (New) -->
-            <div id="violationAlert" class="violation-alert hidden">
-                <p id="violationMessage">&#10060; **CRITICAL CONSTRAINT VIOLATION**</p>
-                <p id="violationSolution">Loading reason and solution...</p>
+        <!-- Output Section (Made visible by default) -->
+        <section id="output" class="card-futuristic p-6 md:p-8 rounded-xl">
+            <h2 class="text-xl md:text-2xl mb-6 header-futuristic border-b border-indigo-700 pb-3"><span style="color: var(--success-color);">&#10003;</span> Optimization Recommendation</h2>
+
+            <!-- Constraint Violation Alert -->
+            <div id="violationAlert" class="p-4 rounded-lg mb-6 hidden border-2 border-error-color bg-[#2c1a1a]" style="box-shadow: 0 0 10px var(--error-color);">
+                <p id="violationMessage" class="text-lg font-bold text-error-color">&#10060; CRITICAL CONSTRAINT VIOLATION</p>
+                <p id="violationSolution" class="text-sm mt-2 text-gray-300">Loading reason and solution...</p>
             </div>
 
-            <!-- Anomaly Alert (Kept for proactive warning) -->
-            <div id="anomalyAlert" class="anomaly-alert">
-                <p>&#9888; **ANOMALY DETECTED (TPR 94%):** Predicted access spike in the next <span id="alert-months"></span> months. Recommendation has been proactively shifted to a **Warmer Tier** to prevent high egress costs and latency penalties.</p>
+            <!-- Anomaly Alert -->
+            <div id="anomalyAlert" class="p-4 rounded-lg mb-6 hidden border-2 border-error-color bg-yellow-900/30" style="box-shadow: 0 0 10px var(--error-color);">
+                <p class="text-sm font-bold text-yellow-300">&#9888; ANOMALY DETECTED:</p>
+                <p class="text-sm text-gray-300">Predicted access spike in the next <span id="alert-months"></span> months. Recommendation has been proactively shifted to a **Warmer Tier** to prevent high egress costs and latency penalties.</p>
             </div>
 
-            <div id="resultContainer">
-                <div class="metric-box">
-                    <h3>Optimal Provider/Tier</h3>
-                    <p id="resultProvider">---</p>
+            <!-- Key Metrics -->
+            <div id="resultContainer" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="metric-box bg-[#2a2a38] p-4 rounded-lg text-center">
+                    <h3 class="text-sm text-highlight-color uppercase font-bold mb-1">Optimal Provider/Tier</h3>
+                    <p id="resultProvider" class="text-2xl font-bold text-success-color metric-value">Run Optimizer</p>
                 </div>
-                <div class="metric-box">
-                    <h3>Projected Monthly Savings</h3>
-                    <p id="resultSavings">---</p>
+                <div class="metric-box bg-[#2a2a38] p-4 rounded-lg text-center">
+                    <h3 class="text-sm text-highlight-color uppercase font-bold mb-1">Projected Monthly Savings</h3>
+                    <p id="resultSavings" class="text-2xl font-bold text-success-color metric-value">0%</p>
                 </div>
-                <div class="metric-box">
-                    <h3>Projected Latency Reduction</h3>
-                    <p id="resultLatency">---</p>
+                <div class="metric-box bg-[#2a2a38] p-4 rounded-lg text-center">
+                    <h3 class="text-sm text-highlight-color uppercase font-bold mb-1">Projected Latency Reduction</h3>
+                    <p id="resultLatency" class="text-2xl font-bold text-success-color metric-value">~0%</p>
                 </div>
-                <div class="metric-box">
-                    <h3>Automation Level</h3>
-                    <p id="resultAutomation">&ge; 95%</p>
-                </div>
-            </div>
-            
-            <!-- Future Prediction Graph -->
-            <div id="futureGraphContainer">
-                <h3 style="color: var(--highlight-color); margin-bottom: 20px; font-family: 'Orbitron', sans-serif;">Future Predicted Cost vs. Budget (Next <span id="graph-months">12</span> Months)</h3>
-                <canvas id="futureGraph"></canvas>
-                <div class="chart-legend">
-                    <div class="legend-item"><span class="legend-color" style="background-color: var(--success-color);"></span> Predicted Optimized Cost</div>
-                    <div class="legend-item"><span class="legend-color" style="background-color: var(--error-color);"></span> Max Budget Threshold</div>
+                <div class="metric-box bg-[#2a2a38] p-4 rounded-lg text-center">
+                    <h3 class="text-sm text-highlight-color uppercase font-bold mb-1">Automation Level</h3>
+                    <p id="resultAutomation" class="text-2xl font-bold text-success-color metric-value">&ge; 95%</p>
                 </div>
             </div>
 
-            <!-- Cost Breakdown Visualization (Simulated) -->
-            <div class="cost-breakdown">
-                <h3>Cost Allocation Breakdown (Optimized vs. Baseline)</h3>
-                <div class="chart-container" id="costBreakdownChart">
+            <!-- Cost Breakdown Visualization (Bar Chart) -->
+            <div class="mb-8 p-4 border border-indigo-700/50 rounded-lg bg-[#1a1a24]">
+                <h3 class="text-lg font-bold text-highlight-color mb-4 header-futuristic">Cost Allocation Breakdown (Optimized vs. Baseline)</h3>
+                <div class="flex h-40 gap-4 justify-around items-end" id="costBreakdownChart">
                     <!-- Bars are dynamically inserted here -->
                 </div>
             </div>
 
-            <div class="explanation" style="margin-top: 40px; padding-top: 20px; border-top: 1px dashed #444;">
-                <h3>Transparency & Explanation (XAI)</h3>
-                <p id="resultExplanation">Run the optimization loop to generate an explainable decision.</p>
+            <!-- Future Prediction Graph (Chart.js) -->
+            <div id="futureGraphContainer" class="mb-8 p-4 border border-indigo-700/50 rounded-lg bg-[#1a1a24]">
+                <h3 class="text-lg font-bold text-highlight-color mb-4 header-futuristic">Storage Usage/Cost Forecast: Actual vs. Predicted</h3>
+                
+                <!-- INTERACTIVE TOGGLE -->
+                <div class="flex justify-center mb-6 toggle-switch">
+                    <input type="radio" id="toggleUsage" name="graphMode" value="usage" checked onchange="toggleGraphMode(this.value)">
+                    <label for="toggleUsage" class="toggle-label mr-2">Data Usage (TB)</label>
+                    
+                    <input type="radio" id="toggleCost" name="graphMode" value="cost" onchange="toggleGraphMode(this.value)">
+                    <label for="toggleCost" class="toggle-label">Projected Cost ($)</label>
+                </div>
+                
+                <div style="height: 350px;">
+                    <canvas id="usageChart"></canvas>
+                </div>
+                
+                <div class="flex justify-center gap-6 mt-4 text-xs text-gray-400 border-t border-gray-700 pt-3">
+                    <div class="flex items-center"><span class="w-3 h-3 rounded-full mr-2" style="background-color: var(--chart-actual-color);"></span> Actual Historical Data</div>
+                    <div class="flex items-center"><span class="w-3 h-3 rounded-full mr-2" style="background-color: var(--chart-predicted-color);"></span> AI Predicted Future Data</div>
+                </div>
             </div>
 
-            <button id="provisionButton" class="provision-btn">Simulate Provisioning via Terraform (IaC) →</button>
+            <!-- Explainable AI (XAI) -->
+            <div class="mt-8 pt-4 border-t border-indigo-700/50">
+                <h3 class="text-lg font-bold text-highlight-color mb-3 header-futuristic">Transparency & Explanation (XAI)</h3>
+                <p id="resultExplanation" class="text-sm text-gray-300">Run the optimization loop above to generate an explainable decision.</p>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button id="provisionButton" class="px-6 py-3 bg-green-500 text-bg-color font-bold rounded-lg shadow-lg hover:bg-green-400 transition" style="box-shadow: 0 0 15px var(--success-color);">
+                    Simulate Provisioning via Terraform (IaC) →
+                </button>
+                
+                <!-- Button to Open Dependency Modal -->
+                <button id="openDependencyModalBtn" class="px-6 py-3 bg-indigo-600 text-white font-bold rounded-lg shadow-lg hover:bg-indigo-700 transition" style="box-shadow: 0 0 15px rgba(99, 102, 241, 0.7);">
+                    View Dependency Graph
+                </button>
+            </div>
+
         </section>
     </main>
-    
-    <!-- Virtual Assistant Bot Interface -->
-    <div id="bot-container">
-        <button id="bot-toggle">&#x2753;</button>
-        <div id="bot-window">
-            <div id="bot-header">AI Assistant</div>
-            <div id="bot-messages">
-                <!-- Initial Bot Message -->
-            </div>
-        </div>
-    </div>
-    
-    <!-- 3. JAVASCRIPT LOGIC -->
+
+    <!-- Full JavaScript Logic -->
     <script>
-        // Global variable to hold the last optimization results for the bot to reference
-        let currentOptimizationResults = null;
-        
+        let usageChartInstance = null; // To hold the Chart.js instance
+        let currentChartData = { usage: [], cost: [], labels: [], dataSize: 0, costPerTB: 0 }; // Store generated data
+
         // Status Codes for Constraint Handling
         const STATUS = {
             SUCCESS: 'SUCCESS',
             BUDGET_VIOLATION: 'BUDGET_VIOLATION',
             LATENCY_VIOLATION: 'LATENCY_VIOLATION',
-            PHYSICAL_VIOLATION: 'PHYSICAL_VIOLATION' 
+            PHYSICAL_VIOLATION: 'PHYSICAL_VIOLATION'
         };
 
         // --- Helper Functions for Data Simulation ---
 
-        // Simple utility to format numbers as currency
         const formatCurrency = (num) => `$${Math.round(num).toLocaleString()}`;
         
+        /**
+         * Helper function to safely read the value of a CSS variable from the :root.
+         * @param {string} varName - The name of the CSS variable (e.g., '--accent-color').
+         * @returns {string} The resolved color value (e.g., '#00e5ff').
+         */
+        function getCssColor(varName) {
+            return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+        }
+
+        /**
+         * Creates a linear gradient for Chart.js using a literal hex color string.
+         * @param {object} ctx - The Canvas context object.
+         * @param {string} colorHex - The resolved hex color string (e.g., '#00e5ff').
+         * @returns {CanvasGradient} The gradient object.
+         */
+        function createGradient(ctx, colorHex) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 350); // Height of graph
+            // Use the hex code directly and append alpha channels (cc=80%, 44=25%, 00=0%)
+            gradient.addColorStop(0, `${colorHex}cc`); 
+            gradient.addColorStop(0.5, `${colorHex}44`); 
+            gradient.addColorStop(1, `${colorHex}00`); 
+            return gradient;
+        }
+
         // Data structure for simulated cloud options (Baseline: Standard Hot, Optimized: Tiered)
         const storageOptions = {
             AWS: {
-                standard: { tier: 'AWS (S3 Standard)', multiplier: 1.0, costFactor: 0.023, maxLatencyReduction: 0.1 },
-                low_access: { tier: 'AWS (S3 Infrequent Access)', multiplier: 0.65, costFactor: 0.0125, maxLatencyReduction: 0.35 },
-                archive: { tier: 'AWS (S3 Glacier Instant)', multiplier: 0.35, costFactor: 0.004, maxLatencyReduction: 0.60 },
+                standard: { tier: 'AWS (S3 Standard)', multiplier: 1.0, costFactor: 0.023, maxLatencyReduction: 0.1, accessCostFactor: 0.02, provider: 'AWS' },
+                low_access: { tier: 'AWS (S3 Infrequent Access)', multiplier: 0.65, costFactor: 0.0125, maxLatencyReduction: 0.35, accessCostFactor: 0.012, provider: 'AWS' },
+                archive: { tier: 'AWS (S3 Glacier Instant)', multiplier: 0.35, costFactor: 0.004, maxLatencyReduction: 0.60, accessCostFactor: 0.005, provider: 'AWS' },
             },
             Azure: {
-                standard: { tier: 'Azure (Hot Blob Storage)', multiplier: 1.0, costFactor: 0.021, maxLatencyReduction: 0.1 },
-                low_access: { tier: 'Azure (Cool Blob Storage)', multiplier: 0.68, costFactor: 0.012, maxLatencyReduction: 0.30 },
-                archive: { tier: 'Azure (Archive Blob Storage)', multiplier: 0.30, costFactor: 0.002, maxLatencyReduction: 0.70 },
+                standard: { tier: 'Azure (Hot Blob Storage)', multiplier: 1.0, costFactor: 0.021, maxLatencyReduction: 0.1, accessCostFactor: 0.02, provider: 'Azure' },
+                low_access: { tier: 'Azure (Cool Blob Storage)', multiplier: 0.68, costFactor: 0.012, maxLatencyReduction: 0.30, accessCostFactor: 0.011, provider: 'Azure' },
+                archive: { tier: 'Azure (Archive Blob Storage)', multiplier: 0.30, costFactor: 0.002, maxLatencyReduction: 0.70, accessCostFactor: 0.004, provider: 'Azure' },
             },
             GCP: {
-                standard: { tier: 'GCP (Standard Storage)', multiplier: 1.0, costFactor: 0.020, maxLatencyReduction: 0.1 },
-                low_access: { tier: 'GCP (Nearline Storage)', multiplier: 0.60, costFactor: 0.01, maxLatencyReduction: 0.40 },
-                archive: { tier: 'GCP (Coldline Storage)', multiplier: 0.40, costFactor: 0.007, maxLatencyReduction: 0.65 },
+                standard: { tier: 'GCP (Standard Storage)', multiplier: 1.0, costFactor: 0.020, maxLatencyReduction: 0.1, accessCostFactor: 0.02, provider: 'GCP' },
+                low_access: { tier: 'GCP (Nearline Storage)', multiplier: 0.60, costFactor: 0.01, maxLatencyReduction: 0.40, accessCostFactor: 0.01, provider: 'GCP' },
+                archive: { tier: 'GCP (Coldline Storage)', multiplier: 0.40, costFactor: 0.007, maxLatencyReduction: 0.65, accessCostFactor: 0.007, provider: 'GCP' },
             }
         };
 
-        // Core AI Decision Engine Simulation
-        function calculateOptimization(dataSize, accessFrequency, budget, compliance, anomaly) {
-            
-            // --- 1. Initial Selection & Baseline Calculation ---
-            let selectedCloud;
-            if (accessFrequency > 60) { selectedCloud = 'AWS'; } 
-            else if (dataSize > 300 && accessFrequency < 5) { selectedCloud = 'GCP'; } 
-            else { selectedCloud = 'Azure'; }
-            
-            let options = storageOptions[selectedCloud];
-            let finalRecommendation = options.standard;
-            let baseMultiplier = 1.0;
-            let latencyReduction = '≈10%';
-            let rationale = `The AI selected **${selectedCloud}** as the optimal cloud provider for this workload. `;
+        function getOptionCost(dataSize, accessFrequency, option) {
+            let optimizedStorageCost = option.costFactor * 1000 * dataSize;
+            let optimizedAccessCost = option.accessCostFactor * 1000 * (accessFrequency / 50) * (dataSize / 100);
+            let retrievalPenaltyFactor = 1 - option.multiplier;
+            let retrievalFee = retrievalPenaltyFactor * 300 * (dataSize / 100);
+            let egressFee = (accessFrequency / 100) * 500 * (dataSize / 100);
+            let optimizedCost = optimizedStorageCost + optimizedAccessCost + retrievalFee + egressFee;
 
-            // Initial Tier Selection based on Access Frequency (ML Simulation)
-            if (accessFrequency < 10) {
-                finalRecommendation = options.archive;
-                baseMultiplier = 0.35;
-                latencyReduction = '≈' + (finalRecommendation.maxLatencyReduction * 100).toFixed(0) + '%';
-                rationale += `Extremely low access frequency indicates an archival workload, maximizing savings at the deepest tier (${finalRecommendation.tier}).`;
-            } else if (accessFrequency < 50) {
-                finalRecommendation = options.low_access;
-                baseMultiplier = 0.65;
-                latencyReduction = '≈' + (finalRecommendation.maxLatencyReduction * 100).toFixed(0) + '%';
-                rationale += `Infrequent access pattern requires a cost-effective warm tier (${finalRecommendation.tier}) to balance retrieval speed and monthly storage cost.`;
-            } else {
-                 finalRecommendation = options.standard;
-                 baseMultiplier = 1.0;
-                 latencyReduction = '≈' + (finalRecommendation.maxLatencyReduction * 100).toFixed(0) + '%';
-                 rationale += `High access frequency necessitates a standard tier (${finalRecommendation.tier}) to maintain low latency and avoid retrieval penalties.`;
-            }
-            
-            // Anomaly Override (Proactive Mitigation)
-            if (anomaly && baseMultiplier < 1.0) { 
-                finalRecommendation = options.low_access; 
-                baseMultiplier = options.low_access.multiplier + 0.05; 
-                latencyReduction = '≈' + (options.low_access.maxLatencyReduction * 100).toFixed(0) + '%';
-                rationale = `ANOMALY OVERRIDE: Predicted spike requires shifting from a cold tier to **${finalRecommendation.tier}** to avoid massive egress/retrieval penalty costs and maintain data availability.`;
-            }
+            const requiredMinTierMultiplier = (accessFrequency > 70) ? 0.9 : (accessFrequency > 40 ? 0.65 : 0.3);
+            const isLatencyValid = option.multiplier >= requiredMinTierMultiplier;
 
-            // Compliance/DataSize Adjustment
-            if (compliance.toUpperCase().includes('HIPAA')) {
-                baseMultiplier += 0.05;
-                rationale += ` Strict HIPAA policy factored in, slightly increasing the final solution cost due to specialized compliance overhead.`;
-            }
+            // Base cost per TB for the optimized tier (used for forecasting)
+            const baseCostPerTB = (optimizedCost / dataSize) || 0.1;
 
-            // Cost Calculation (Simple linear model)
-            const baselineCost = 25 * dataSize + (accessFrequency * 0.05 * dataSize); 
-            let optimizedCost = (finalRecommendation.costFactor * 1000 * dataSize) + (accessFrequency * 0.02 * dataSize * baseMultiplier);
-            let retrievalFee = (1 - baseMultiplier) * 500 * (dataSize / 100); 
-            let egressFee = (accessFrequency / 100) * 800 * (dataSize / 100);
-            
-            if (anomaly) { retrievalFee = 200 * (dataSize / 100); }
-            optimizedCost += retrievalFee + egressFee;
-
-            // Final Savings (pre-constraint check)
-            let savings = ((baselineCost - optimizedCost) / baselineCost) * 100;
-            
-            
-            // --- 2. Constraint Checking ---
-
-            // A. PHYSICAL_VIOLATION Check (Extreme Incompatibility)
-            if (dataSize > 4000 && accessFrequency > 500) {
-                return {
-                    status: STATUS.PHYSICAL_VIOLATION,
-                    rationale: `The combination of **${dataSize}TB** data volume and **${accessFrequency} Million** monthly reads exceeds the I/O capacity and scaling limits of *any* single cost-effective cloud storage tier. This architecture is physically impossible to provision without massive cost overruns or chronic performance failure.`,
-                    solution: `Implement a federated storage strategy (data sharding across multiple regions/clouds) or drastically reduce the access frequency (below 100M reads/month).`,
-                    minRequiredCost: 0
-                };
-            }
-
-            // B. LATENCY_VIOLATION Check (High Access requiring fast tier, but AI chose slow one for cost)
-            const requiredMinTierMultiplier = (accessFrequency > 70) ? 0.9 : 0.65; // High access needs Hot or Cool
-            if (accessFrequency > 70 && finalRecommendation.multiplier < requiredMinTierMultiplier) { 
-                // This scenario means access is extremely high but the chosen tier is too slow (e.g., Coldline)
-                return {
-                    status: STATUS.LATENCY_VIOLATION,
-                    rationale: `Your high access frequency (**${accessFrequency}M reads/month**) demands a high-speed **Hot Tier** solution to prevent chronic latency and retrieval issues. The recommended tier (**${finalRecommendation.tier}**) cannot physically meet the required I/O performance for this workload, even if it met the budget.`,
-                    solution: `Increase the Max Monthly Budget to afford a Standard/Hot Tier solution, or manually decrease the Access Frequency requirement.`,
-                    minRequiredCost: 0
-                };
-            }
-
-            // C. BUDGET_VIOLATION Check
-            const minStorageCost = Math.min(
-                storageOptions.AWS.archive.costFactor, 
-                storageOptions.Azure.archive.costFactor, 
-                storageOptions.GCP.archive.costFactor
-            ) * 1000 * dataSize;
-            const absoluteMinimumMonthlyCost = minStorageCost + (accessFrequency * 0.005 * dataSize); 
-            
-            if (optimizedCost > budget) {
-                return {
-                    status: STATUS.BUDGET_VIOLATION,
-                    rationale: `The calculated cost for the optimal technical solution (**${finalRecommendation.tier}**) is **${formatCurrency(optimizedCost)}**, which exceeds your maximum monthly budget of **${formatCurrency(budget)}**.`,
-                    solution: `Increase the Max Monthly Budget to at least **${formatCurrency(absoluteMinimumMonthlyCost)}** (the cost of the absolute cheapest tier) or reduce the required Data Volume/Access Frequency.`,
-                    minRequiredCost: absoluteMinimumMonthlyCost 
-                };
-            }
-
-            // --- 3. SUCCESS Case ---
             return {
-                status: STATUS.SUCCESS,
-                providerTier: finalRecommendation.tier,
-                savings: Math.max(0, savings), // Ensure no negative savings reported
-                latencyReduction: latencyReduction,
-                baselineCost: baselineCost,
-                optimizedCost: optimizedCost,
-                retrievalFee: retrievalFee,
-                egressFee: egressFee,
-                rationale: rationale,
-                anomaly: anomaly,
-                budget: budget
+                optimizedCost,
+                optimizedStorageCost,
+                optimizedAccessCost,
+                retrievalFee,
+                egressFee,
+                isLatencyValid,
+                baseCostPerTB
             };
         }
 
-        // --- DOM Manipulation Functions ---
+        // Core AI Decision Engine Simulation
+        function calculateOptimization(dataSize, accessFrequency, budget, compliance, anomaly, forecastWindow) {
+            const baselineCost = 25 * dataSize + (accessFrequency * 0.04 * dataSize);
+
+            let bestOption = null;
+            let lowestCost = Infinity;
+
+            const cloudProviders = ['AWS', 'Azure', 'GCP'];
+            const tiers = ['standard', 'low_access', 'archive'];
+
+            let bestCostPerTB = 0;
+
+            for (const provider of cloudProviders) {
+                for (const tierName of tiers) {
+                    const option = storageOptions[provider][tierName];
+                    const { optimizedCost, isLatencyValid, baseCostPerTB, ...costComponents } = getOptionCost(dataSize, accessFrequency, option);
+
+                    let finalOptimizedCost = optimizedCost;
+                    if (compliance.toUpperCase().includes('HIPAA')) {
+                        finalOptimizedCost *= 1.05;
+                    }
+
+                    if (finalOptimizedCost < lowestCost && isLatencyValid) {
+                        lowestCost = finalOptimizedCost;
+                        bestCostPerTB = baseCostPerTB;
+                        bestOption = {
+                            provider,
+                            tierName,
+                            ...option,
+                            ...costComponents,
+                            optimizedCost: finalOptimizedCost,
+                            baselineCost: baselineCost,
+                            baseCostPerTB: baseCostPerTB
+                        };
+                    }
+                }
+            }
+
+            // --- 2. Constraint Checking ---
+            if (dataSize > 4000 && accessFrequency > 500) {
+                return { status: STATUS.PHYSICAL_VIOLATION, rationale: `Exceeds I/O capacity of any single cost-effective tier.`, solution: `Implement a federated storage strategy.`, minRequiredCost: 0 };
+            }
+
+            if (!bestOption) {
+                 return { status: STATUS.LATENCY_VIOLATION, rationale: `High access frequency demands a Hot Tier, but no tier meets both speed and cost expectations.`, solution: `Increase the Max Monthly Budget or decrease Access Frequency.`, minRequiredCost: lowestCost };
+            }
+
+            const requiredMinTierMultiplier = (accessFrequency > 70) ? 0.9 : (accessFrequency > 40 ? 0.65 : 0.3);
+            if (bestOption.multiplier < requiredMinTierMultiplier) {
+                return { status: STATUS.LATENCY_VIOLATION, rationale: `The cheapest tier found (**${bestOption.tier}**) fails to meet the minimum required I/O performance for your high access frequency.`, solution: `Increase the Max Monthly Budget to afford a warmer tier.`, minRequiredCost: bestOption.optimizedCost };
+            }
+
+            if (bestOption.optimizedCost > budget) {
+                return { status: STATUS.BUDGET_VIOLATION, rationale: `The calculated cost for the optimal technical solution (**${bestOption.tier}**) is **${formatCurrency(bestOption.optimizedCost)}**, which exceeds your budget.`, solution: `Increase the Max Monthly Budget to at least **${formatCurrency(bestOption.optimizedCost)}** or reduce the Data Volume/Access Frequency.`, minRequiredCost: bestOption.optimizedCost };
+            }
+
+            // --- 3. Anomaly Override ---
+            let finalRecommendation = bestOption;
+            let finalRationale = `The AI performed an exhaustive search and selected **${finalRecommendation.tier}** because it offered the lowest monthly cost (${formatCurrency(finalRecommendation.optimizedCost)}) while satisfying the latency requirements.`;
+            let anomalyDetected = anomaly;
+
+            if (anomaly && finalRecommendation.tierName === 'archive') {
+                const provider = finalRecommendation.provider;
+                finalRecommendation = storageOptions[provider].low_access;
+
+                const newCostResult = getOptionCost(dataSize, accessFrequency, finalRecommendation);
+                finalRecommendation = { ...finalRecommendation, ...newCostResult, optimizedCost: newCostResult.optimizedCost };
+
+                if (compliance.toUpperCase().includes('HIPAA')) {
+                     finalRecommendation.optimizedCost *= 1.05;
+                }
+                
+                finalRecommendation.baseCostPerTB = (finalRecommendation.optimizedCost / dataSize) || 0.12;
+
+                finalRationale = `ANOMALY OVERRIDE: Predicted access spike requires shifting from the cold tier to **${finalRecommendation.tier}** to prevent high egress/retrieval penalty costs.`;
+            }
+
+            let savings = ((baselineCost - finalRecommendation.optimizedCost) / baselineCost) * 100;
+            
+            // The cost used for the predicted graph is the base cost factor of the final recommended tier
+            const predictedCostPerTB = finalRecommendation.baseCostPerTB;
+            // The cost used for the actual graph (historical) is the baseline cost factor
+            const actualCostPerTB = (baselineCost / dataSize) || 0.25;
+
+            // --- 4. SUCCESS Case ---
+            return {
+                status: STATUS.SUCCESS,
+                providerTier: finalRecommendation.tier,
+                savings: Math.max(0, savings),
+                latencyReduction: '≈' + (finalRecommendation.maxLatencyReduction * 100).toFixed(0) + '%',
+                baselineCost: baselineCost,
+                optimizedCost: finalRecommendation.optimizedCost,
+                retrievalFee: finalRecommendation.retrievalFee,
+                egressFee: finalRecommendation.egressFee,
+                optimizedAccessCost: finalRecommendation.optimizedAccessCost,
+                rationale: finalRationale,
+                anomaly: anomalyDetected,
+                budget: budget,
+                dataSize: dataSize,
+                forecastWindow: forecastWindow,
+                actualCostPerTB,
+                predictedCostPerTB,
+            };
+        }
+
+        // --- DOM Manipulation Functions (Cost Breakdown Bar Chart) ---
         function updateCostBreakdown(baseline, optimized, egress, retrieval) {
             const chartContainer = document.getElementById('costBreakdownChart');
-            chartContainer.innerHTML = ''; 
+            chartContainer.innerHTML = '';
             const maxCost = Math.max(baseline, optimized) * 1.05 || 100;
 
             const data = [
-                { title: 'Baseline Cost', value: baseline, id: 'original', color: 'var(--accent-color)' },
-                { title: 'Optimized Cost', value: optimized, id: 'optimized', color: 'var(--success-color)' },
-                { title: 'Egress Fees (Predicted)', value: egress, id: 'egress', color: 'var(--error-color)' },
-                { title: 'Retrieval Fees', value: retrieval, id: 'retrieval', color: 'var(--highlight-color)' },
+                { title: 'Baseline Cost', value: baseline, id: 'original', color: getCssColor('--accent-color') }, // Use resolved color
+                { title: 'Optimized Cost', value: optimized, id: 'optimized', color: getCssColor('--success-color') }, // Use resolved color
+                { title: 'Egress Fees (Predicted)', value: egress, id: 'egress', color: getCssColor('--error-color') }, // Use resolved color
+                { title: 'Retrieval Fees', value: retrieval, id: 'retrieval', color: getCssColor('--highlight-color') }, // Use resolved color
             ];
+            
+            // Ensure positive costs for visualization, use a small value if cost is 0
+            const safeData = data.map(item => ({ ...item, value: item.value < 0.1 ? 0.1 : item.value }));
 
-            data.forEach(item => {
+            safeData.forEach(item => {
                 const heightPercent = Math.min(100, (item.value / maxCost) * 100);
-                
+
                 const barHtml = `
-                    <div class="bar">
-                        <div class="bar-fill" id="bar-${item.id}" style="height: ${heightPercent}%; background-color: ${item.color};"></div>
-                        <span class="bar-label" id="label-${item.id}">${formatCurrency(item.value)}</span>
-                        <span class="bar-title">${item.title}</span>
+                    <div class="flex-1 max-w-[120px] bg-gray-700 rounded-t-md relative flex flex-col justify-end items-center transition-all duration-700" style="height: 100%;">
+                        <div class="w-full transition-all duration-700 ease-out absolute bottom-0" style="height: ${heightPercent}%; background-color: ${item.color}; border-radius: 4px 4px 0 0; box-shadow: 0 0 8px ${item.color}44;"></div>
+                        <span class="absolute top-[-25px] text-xs font-bold" style="color: ${item.color};">${formatCurrency(item.value)}</span>
+                        <span class="absolute bottom-[-20px] text-[0.65rem] text-center text-gray-400">${item.title.split(' ')[0]}</span>
                     </div>
                 `;
                 chartContainer.insertAdjacentHTML('beforeend', barHtml);
             });
         }
         
-        function updateFuturePredictionGraph(budget, optimizedCost, forecastWindow) {
-            const canvas = document.getElementById('futureGraph');
-            const ctx = canvas.getContext('2d');
-            const width = 1000; 
-            const height = 250; 
+        // Function to handle the mode switch (TB vs $)
+        window.toggleGraphMode = function(mode) {
+            if (usageChartInstance && currentChartData.labels.length > 0) {
+                drawChart(mode);
+            }
+        };
+
+        // Function to generate the data structure for the graph
+        function generateForecastData(dataSize, forecastWindow, actualCostPerTB, predictedCostPerTB) {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const historyLength = 12;
+
+            const labels = [];
             
-            const scale = window.devicePixelRatio;
-            canvas.style.width = '100%';
-            canvas.style.height = height + 'px';
-            canvas.width = Math.floor(width * scale);
-            canvas.height = Math.floor(height * scale);
-            ctx.scale(scale, scale);
-
-            ctx.clearRect(0, 0, width, height);
-
-            const months = parseInt(forecastWindow);
-            const dataPoints = [];
-            for (let i = 0; i <= months; i++) {
-                // Simulate slight linear cost creep over time
-                const factor = 1 + (i / months) * 0.1; 
-                dataPoints.push(optimizedCost * factor);
+            // 1. Generate labels for history and forecast
+            for (let i = historyLength; i > 0; i--) {
+                const monthIndex = (new Date().getMonth() - i + 12) % 12;
+                labels.push(months[monthIndex]);
+            }
+            const currentMonthIndex = new Date().getMonth();
+            for (let i = 0; i < forecastWindow; i++) {
+                 const monthIndex = (currentMonthIndex + i) % 12;
+                 labels.push(months[monthIndex] + (i >= 12 ? ' +' + Math.floor((i + 1) / 12) : ''));
             }
 
-            // Ensure optimizedCost is valid for graphing (use budget if failure)
-            const graphOptimizedCost = optimizedCost > 0 ? optimizedCost : budget;
-            const maxDataValue = Math.max(budget * 1.1, ...dataPoints) || 1000;
-            const padding = 30;
-            const xStep = (width - 2 * padding) / months;
-            const yMax = height - 2 * padding;
+            // 2. Generate actual historical usage data (12 points)
+            let currentUsage = dataSize - (dataSize * 0.2); // Start 20% lower than current input
+            const actualUsage = [];
 
-            ctx.fillStyle = '#666';
-            ctx.font = "10px 'Roboto Mono'";
-            for (let i = 0; i <= months; i += Math.max(1, Math.round(months / 6))) {
-                const x = padding + i * xStep;
-                ctx.fillText(i.toString(), x, height - padding + 15);
+            for (let i = 0; i < historyLength; i++) {
+                currentUsage += (Math.random() * (dataSize * 0.008) + (dataSize * 0.002)); 
+                actualUsage.push(Math.round(currentUsage));
+            }
+
+            // 3. Generate predicted future usage data
+            let predictedUsage = actualUsage[historyLength - 1];
+            const predictedUsageData = Array(historyLength).fill(null);
+            predictedUsageData[historyLength - 1] = predictedUsage;
+
+            for (let i = 0; i < forecastWindow; i++) {
+                predictedUsage += (dataSize * 0.01 + Math.random() * (dataSize * 0.005));
+                predictedUsageData.push(Math.round(predictedUsage));
             }
             
-            ctx.fillStyle = 'var(--text-color)';
-            ctx.textAlign = 'right';
-            const budgetY = (height - padding) - (budget / maxDataValue * yMax);
-            ctx.fillText(formatCurrency(budget), padding - 5, budgetY);
+            // 4. Combine Actual/Predicted usage into one array for the 'Actual' line (with projection segment)
+            const fullActualUsage = [...actualUsage, ...predictedUsageData.slice(historyLength)];
 
+            // 5. Generate Cost Data based on Usage Data
+            const actualCost = fullActualUsage.map(tb => Math.round(tb * actualCostPerTB * 1000)); // Cost is higher for historical baseline tier
+            const predictedCost = predictedUsageData.map(tb => tb === null ? null : Math.round(tb * predictedCostPerTB * 1000)); // Cost is lower for optimized tier
+
+            currentChartData = {
+                labels: labels,
+                usage: { actual: fullActualUsage, predicted: predictedUsageData },
+                cost: { actual: actualCost, predicted: predictedCost },
+                dataSize: dataSize,
+                forecastWindow: forecastWindow
+            };
+        }
+
+        /**
+         * Initializes or updates the Chart.js graph with simulated Actual and Predicted Data.
+         */
+        function drawChart(mode = 'usage') {
+            const ctx = document.getElementById('usageChart').getContext('2d');
             
-            // Draw Budget Line
-            ctx.strokeStyle = 'var(--error-color)';
-            ctx.setLineDash([5, 5]); 
-            ctx.beginPath();
-            ctx.moveTo(padding, budgetY);
-            ctx.lineTo(width - padding, budgetY);
-            ctx.stroke();
+            if (usageChartInstance) {
+                usageChartInstance.destroy();
+            }
 
-            // Draw Optimized Cost Line only if successful
-            if (optimizedCost > 0) {
-                ctx.strokeStyle = 'var(--success-color)';
-                ctx.lineWidth = 3;
-                ctx.setLineDash([]); 
-                ctx.beginPath();
-                
-                dataPoints.forEach((value, index) => {
-                    const x = padding + index * xStep;
-                    const y = (height - padding) - (value / maxDataValue * yMax);
-                    if (index === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
+            const isUsageMode = mode === 'usage';
+            const dataSet = isUsageMode ? currentChartData.usage : currentChartData.cost;
+            const unit = isUsageMode ? 'TB' : '$';
+            const label = isUsageMode ? 'Storage Usage' : 'Projected Cost';
+            const tooltipFormat = (value) => isUsageMode ? `${value} TB` : formatCurrency(value);
+
+            // --- FIX: Resolve CSS colors before passing them to Canvas/Chart.js ---
+            const actualColor = getCssColor('--chart-actual-color');
+            const predictedColor = getCssColor('--chart-predicted-color');
+
+            // Create the gradients using the resolved hex colors
+            const actualGradient = createGradient(ctx, actualColor);
+            const predictedGradient = createGradient(ctx, predictedColor);
+
+
+            usageChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: currentChartData.labels,
+                    datasets: [
+                        {
+                            label: `Actual/Baseline ${label}`,
+                            data: dataSet.actual,
+                            // High contrast color
+                            borderColor: actualColor, // Use resolved color
+                            backgroundColor: actualGradient,
+                            borderWidth: 3,
+                            fill: 'origin', // Fill area under the line
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: actualColor, // Use resolved color
+                            pointBorderColor: getCssColor('--bg-color'), // Use resolved color
+                            order: 1 // Draw actual line first (in back)
+                        },
+                        {
+                            label: `AI Optimized ${label}`,
+                            data: dataSet.predicted,
+                            // High contrast color
+                            borderColor: predictedColor, // Use resolved color
+                            backgroundColor: predictedGradient,
+                            borderWidth: 3,
+                            fill: 'origin',
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: predictedColor, // Use resolved color
+                            pointBorderColor: getCssColor('--bg-color'), // Use resolved color
+                            // Dotted line for prediction segment
+                            borderDash: [8, 4], 
+                            order: 0 // Draw predicted line second (in front)
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: (items) => `Month: ${items[0].label}`,
+                                label: (context) => {
+                                    const value = context.parsed.y;
+                                    const labelText = context.dataset.label;
+                                    return `${labelText}: ${tooltipFormat(value)}`;
+                                }
+                            },
+                            bodyFont: { family: 'Roboto Mono', size: 14, weight: '700' },
+                            titleFont: { family: 'Orbitron', size: 16 },
+                            backgroundColor: 'rgba(30, 30, 44, 0.95)', // Dark card color
+                            borderColor: getCssColor('--accent-color'), // Use resolved color
+                            borderWidth: 1,
+                            cornerRadius: 6,
+                            caretSize: 8,
+                            padding: 12,
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Time (Months)', color: getCssColor('--highlight-color'), font: { family: 'Orbitron' } }, // Use resolved color
+                            grid: { color: '#2a2a38' },
+                            ticks: { color: getCssColor('--text-color') } // Use resolved color
+                        },
+                        y: {
+                            title: { display: true, text: `${label} (${unit})`, color: getCssColor('--highlight-color'), font: { family: 'Orbitron' } }, // Use resolved color
+                            beginAtZero: false,
+                            grid: { color: '#2a2a38' },
+                            ticks: {
+                                color: getCssColor('--text-color'), // Use resolved color
+                                callback: function(value, index, ticks) {
+                                    return isUsageMode ? `${value} TB` : formatCurrency(value);
+                                }
+                            }
+                        }
                     }
-                    ctx.fillStyle = 'var(--success-color)';
-                    ctx.beginPath();
-                    ctx.arc(x, y, 3, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-                ctx.stroke();
-            }
-
-            document.getElementById('graph-months').textContent = forecastWindow;
+                }
+            });
         }
 
-        // --- Chat Bot Logic (Unchanged from V3) ---
-        function appendMessage(sender, text, suggestions = []) {
-            const messagesDiv = document.getElementById('bot-messages');
-            const msgContainer = document.createElement('div');
-            
-            if (sender === 'bot') {
-                msgContainer.className = 'bot-message';
-                msgContainer.innerHTML = text;
-                
-                if (suggestions.length > 0) {
-                    const ul = document.createElement('ul');
-                    ul.className = 'suggestion-list';
-                    suggestions.forEach(s => {
-                        const li = document.createElement('li');
-                        const btn = document.createElement('button');
-                        btn.textContent = s;
-                        btn.onclick = () => handleBotInput(s);
-                        li.appendChild(btn);
-                        ul.appendChild(li);
-                    });
-                    msgContainer.appendChild(ul);
-                }
 
-            } else {
-                msgContainer.className = 'user-query';
-                msgContainer.textContent = text;
-            }
+        // --- Event Listeners and Main Logic ---
 
-            messagesDiv.appendChild(msgContainer);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight; 
-        }
-
-        function handleBotInput(query) {
-            appendMessage('user', query);
-
-            if (!currentOptimizationResults) {
-                appendMessage('bot', "Please run the **AI Optimization Loop** first to generate results I can analyze!");
-                return;
-            }
-
-            const res = currentOptimizationResults;
-            let responseText = "I'm sorry, I don't have a canned response for that specific question. Try one of the suggestions below.";
-
-            // If system failed, the bot needs to focus on the reason
-            if (res.status !== STATUS.SUCCESS) {
-                responseText = `The AI was unable to complete the optimization due to a **${res.status.replace('_', ' ')}**. The primary reason was: ${res.rationale}. **Solution:** ${res.solution}`;
-            } else {
-                const q = query.toLowerCase();
-
-                if (q.includes('savings')) {
-                    responseText = `The AI projects **${res.savings.toFixed(1)}%** in monthly savings by using the recommended tier: **${res.providerTier}**.`;
-                } else if (q.includes('anomaly')) {
-                    if (res.anomaly) {
-                        responseText = `**Anomaly Status:** ACTIVE. The system detected a potential spike and preemptively selected a warmer tier (${res.providerTier}) to save you from huge retrieval penalties.`;
-                    } else {
-                        responseText = `**Anomaly Status:** INACTIVE. Access patterns look stable, allowing us to maintain the deepest possible storage tier for maximum savings.`;
-                    }
-                } else if (q.includes('baseline')) {
-                    responseText = `Your baseline (unoptimized) monthly cost is estimated at **${formatCurrency(res.baselineCost)}**. The optimized cost is **${formatCurrency(res.optimizedCost)}**.`;
-                } else if (q.includes('cloud')) {
-                    const provider = res.providerTier.split(' ')[0];
-                    responseText = `The AI analyzed the workload and determined **${provider}** is the optimal cloud provider based on your inputs and cost models for the recommended tier.`;
-                } else if (q.includes('cost breakdown')) {
-                    responseText = `The current month's estimated cost breakdown includes: Storage: ${formatCurrency(res.optimizedCost - res.egressFee - res.retrievalFee)}, Egress Fees: ${formatCurrency(res.egressFee)}, Retrieval Fees: ${formatCurrency(res.retrievalFee)}.`;
-                }
-            }
-
-
-            // Simple delay for a more 'responsive' feel
-            setTimeout(() => {
-                appendMessage('bot', responseText, [
-                    'What are the projected savings?', 
-                    'What is the baseline cost?', 
-                    'What is the anomaly status?',
-                    'Explain the cost breakdown.',
-                    'Why did the AI choose this cloud?'
-                ]);
-            }, 500);
-        }
-
-        document.getElementById('bot-toggle').addEventListener('click', () => {
-            const botWindow = document.getElementById('bot-window');
-            botWindow.style.display = botWindow.style.display === 'flex' ? 'none' : 'flex';
-            if (botWindow.style.display === 'flex') {
-                 // Initial greeting
-                if (document.getElementById('bot-messages').children.length === 0) {
-                    handleBotInput('hello'); // Triggers initial response with suggestions
-                }
-            }
-        });
-        
-        // --- Main Form Event Listener ---
         document.getElementById('optimizerForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // 1. Get Input Values
+
             const dataSize = parseFloat(document.getElementById('dataSize').value);
             const accessFrequency = parseFloat(document.getElementById('accessFrequency').value);
             const compliance = document.getElementById('compliance').value;
             const budget = parseFloat(document.getElementById('budget').value);
-            const forecastWindow = document.getElementById('forecastWindow').value;
+            const forecastWindow = parseInt(document.getElementById('forecastWindow').value);
             const injectAnomaly = document.getElementById('injectAnomaly').checked;
 
-            // 2. Run the AI Simulation
             const results = calculateOptimization(
-                dataSize, 
-                accessFrequency, 
-                budget, 
-                compliance, 
-                injectAnomaly
+                dataSize,
+                accessFrequency,
+                budget,
+                compliance,
+                injectAnomaly,
+                forecastWindow
             );
-            
-            // Store results globally for the bot
-            currentOptimizationResults = results;
 
             // DOM elements
             const violationAlert = document.getElementById('violationAlert');
@@ -940,117 +753,118 @@
             const resultSavings = document.getElementById('resultSavings');
             const resultLatency = document.getElementById('resultLatency');
             const resultExplanation = document.getElementById('resultExplanation');
-            const successColor = 'var(--success-color)';
-            const errorColor = 'var(--error-color)';
-            
-            // Reset colors and visibility
-            resultProvider.style.color = successColor;
-            resultSavings.style.color = successColor;
+
+
+            // Reset UI state
             violationAlert.classList.add('hidden');
-            anomalyAlert.style.display = 'none';
+            anomalyAlert.classList.add('hidden');
             provisionButton.disabled = false;
             provisionButton.textContent = "Simulate Provisioning via Terraform (IaC) →";
+            resultProvider.style.color = getCssColor('--success-color');
+            resultSavings.style.color = getCssColor('--success-color');
+            resultLatency.style.color = getCssColor('--success-color');
             
-            
+            // Set alert months text
+            document.getElementById('alert-months').textContent = forecastWindow;
+
+
             if (results.status !== STATUS.SUCCESS) {
                 // --- VIOLATION HANDLING ---
                 violationAlert.classList.remove('hidden');
                 document.getElementById('violationMessage').innerHTML = `&#10060; **CRITICAL CONSTRAINT VIOLATION: ${results.status.replace('_', ' ')}**`;
                 document.getElementById('violationSolution').innerHTML = `**Reason:** ${results.rationale}<br><br>**Solution:** ${results.solution}`;
-                
-                // Update Metrics to show failure state
+
                 resultProvider.textContent = 'FAILURE';
                 resultSavings.textContent = 'N/A';
                 resultLatency.textContent = 'N/A';
-                resultProvider.style.color = errorColor;
-                resultSavings.style.color = errorColor;
-                resultLatency.style.color = errorColor;
+                resultProvider.style.color = getCssColor('--error-color');
+                resultSavings.style.color = getCssColor('--error-color');
+                resultLatency.style.color = getCssColor('--error-color');
 
-                // Disable provisioning
                 provisionButton.disabled = true;
                 provisionButton.textContent = "Provisioning Disabled (Violation)";
 
-                // Clear visualizations (or set to error state)
-                updateCostBreakdown(0, 0, 0, 0); 
-                updateFuturePredictionGraph(budget, budget, forecastWindow); 
+                updateCostBreakdown(results.minRequiredCost || 0, 0, 0, 0);
                 
-                // Update XAI Explanation
-                resultExplanation.innerHTML = `
-                    The optimization loop terminated due to a **${results.status.replace('_', ' ')}** error. The AI cannot proceed with a viable, compliant recommendation given the current constraints. Please review the violation message above. The absolute minimum cost to meet the data requirement is **${formatCurrency(results.minRequiredCost)}**.
-                `;
+                // Initialize forecast data even on failure (using baseline cost per TB)
+                generateForecastData(dataSize, forecastWindow, results.minRequiredCost > 0 ? (results.minRequiredCost / dataSize) : 0.25, 0.25);
+                drawChart(document.querySelector('input[name="graphMode"]:checked').value);
+                
+                resultExplanation.innerHTML = `The optimization loop terminated due to a **${results.status.replace('_', ' ')}** error. Please review the violation message above.`;
 
             } else {
-                // --- SUCCESS HANDLING (Existing Logic) ---
-                
-                // 3. Display Results
+                // --- SUCCESS HANDLING ---
                 resultProvider.textContent = results.providerTier;
                 resultSavings.textContent = `${results.savings.toFixed(1)}%`;
                 resultLatency.textContent = results.latencyReduction;
-                resultLatency.style.color = successColor;
-                
-                // Anomaly Alert logic
+
                 if (results.anomaly) {
-                    anomalyAlert.style.display = 'block';
-                    document.getElementById('alert-months').textContent = forecastWindow;
+                    anomalyAlert.classList.remove('hidden');
                 }
 
-                // 4. Update Explainable AI (XAI) text
                 resultExplanation.innerHTML = `
-                    The AI performed multi-objective optimization over a **${forecastWindow}-month** horizon. It found the optimal balance between cost, latency, 
-                    and the **${compliance.toUpperCase()}** compliance requirements based on the predicted **${accessFrequency}M** monthly reads. 
+                    The AI performed multi-objective optimization over a **${forecastWindow}-month** horizon. It found the optimal balance between cost, latency,
+                    and the **${compliance.toUpperCase()}** compliance requirements based on the predicted **${accessFrequency}M** monthly reads.
                     **Decision Rationale:** ${results.rationale}
                 `;
-                
-                // 5. Update Visualizations
+
                 updateCostBreakdown(
-                    results.baselineCost, 
-                    results.optimizedCost, 
-                    results.egressFee, 
+                    results.baselineCost,
+                    results.optimizedCost,
+                    results.egressFee,
                     results.retrievalFee
                 );
-                
-                setTimeout(() => {
-                    updateFuturePredictionGraph(budget, results.optimizedCost, forecastWindow);
-                }, 100);
 
-                // 6. Provisioning Button Logic
                 document.getElementById('provisionButton').onclick = function() {
                     const modal = document.getElementById('provisionModal');
-                    document.getElementById('modal-text').textContent = 
+                    document.getElementById('modal-text').textContent =
                         `IaC Automation successful. ${dataSize}TB of storage provisioned to ${results.providerTier} with a ${results.savings.toFixed(1)}% projected saving.`;
                     modal.style.display = 'flex';
                 };
+
+                // Generate and draw the new interactive forecast graph
+                generateForecastData(dataSize, forecastWindow, results.actualCostPerTB, results.predictedCostPerTB);
+                drawChart(document.querySelector('input[name="graphMode"]:checked').value);
             }
 
-
-            // 7. Show the Output section and scroll
-            document.getElementById('output').classList.remove('hidden');
             document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
-            
-            // Reset chat history and give initial guidance
-            document.getElementById('bot-messages').innerHTML = '';
-            appendMessage('bot', "Optimization complete! I've analyzed the new results. How can I help?", [
-                'What are the projected savings?', 
-                'What is the baseline cost?', 
-                'What is the anomaly status?',
-                'Why did the AI choose this cloud?'
-            ]);
+        });
+
+        // --- Dependency Modal Logic (Kept separate for clarity) ---
+        const dependencyModal = document.getElementById('dependencyModal');
+        const openDependencyModalBtn = document.getElementById('openDependencyModalBtn');
+        const closeDependencyModalBtn = document.getElementById('closeDependencyModalBtn');
+
+        window.openDependencyModal = function() {
+            dependencyModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.closeDependencyModal = function() {
+            dependencyModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        openDependencyModalBtn.addEventListener('click', openDependencyModal);
+        closeDependencyModalBtn.addEventListener('click', closeDependencyModal);
+
+        dependencyModal.addEventListener('click', (e) => {
+            if (e.target === dependencyModal) {
+                closeDependencyModal();
+            }
         });
         
-        // Initial setup for the graph to prevent blank space on load
+        // Initial setup for the graph and cost breakdown (runs when the window is fully loaded)
         window.onload = function() {
-            const initialBudget = parseFloat(document.getElementById('budget').value);
-            const initialOptimized = initialBudget * 0.7; // Placeholder value
-            const initialForecast = document.getElementById('forecastWindow').value;
-            updateFuturePredictionGraph(initialBudget, initialOptimized, initialForecast);
+            const initialDataSize = parseFloat(document.getElementById('dataSize').value);
+            const initialForecast = parseInt(document.getElementById('forecastWindow').value);
             
-            // Initial message for the closed bot
-            document.getElementById('bot-messages').innerHTML = '';
-            appendMessage('bot', "Hello! I'm your AI Assistant. Run the optimization loop, and I can analyze the results for you.", [
-                'What are the projected savings?', 
-                'What is the baseline cost?', 
-                'What is the anomaly status?'
-            ]);
+            // Initial dummy forecast data
+            generateForecastData(initialDataSize, initialForecast, 0.25, 0.15); 
+            drawChart('usage');
+            
+            // Initial dummy cost breakdown
+            updateCostBreakdown(3000, 2000, 200, 100);
         };
     </script>
 </body>
