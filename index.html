@@ -7,12 +7,12 @@
     <!-- 1. Google Font for Futuristic Look -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- 2. CSS STYLING (Significantly Enhanced for a Futuristic Look) -->
+    <!-- 2. CSS STYLING (Enhanced for Structure and Consistency) -->
     <style>
         :root {
-            --bg-color: #0d0d12; /* Deep space black */
-            --card-color: #1e1e2c; /* Dark indigo card */
-            --text-color: #e0f7fa; /* Light cyan text */
+            --bg-color: #0d0d12; 
+            --card-color: #1e1e2c; 
+            --text-color: #e0f7fa; 
             --accent-color: #00e5ff; /* Neon Cyan */
             --highlight-color: #82b1ff; /* Light blue glow */
             --error-color: #ff3d00; /* Neon red */
@@ -38,7 +38,7 @@
             padding: 20px 0;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), var(--glow-filter);
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             align-items: center;
         }
 
@@ -51,24 +51,10 @@
             letter-spacing: 2px;
         }
 
-        nav a {
-            color: var(--text-color);
-            text-decoration: none;
-            margin-left: 25px;
-            padding: 5px 10px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        nav a:hover {
-            border-bottom: 2px solid var(--highlight-color);
-            color: var(--highlight-color);
-        }
-
         main {
             padding: 40px 20px;
-            width: 90%;
-            max-width: 1100px;
+            width: 95%;
+            max-width: 1200px;
         }
 
         .card {
@@ -87,16 +73,20 @@
             padding-bottom: 15px;
             margin-top: 0;
             text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-
+        
+        /* Input & Form Styling */
         .input-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 5px; /* Reduced margin for tighter layout */
         }
 
         label {
@@ -131,6 +121,7 @@
             color: var(--text-color);
             font-size: 0.9em;
             margin-top: 10px;
+            height: 100%;
         }
 
         .checkbox-group input {
@@ -163,7 +154,7 @@
             box-shadow: 0 4px 15px rgba(130, 177, 255, 0.6);
         }
 
-        /* Output Section Styling */
+        /* Output Metrics Styling */
         .hidden {
             display: none;
         }
@@ -193,10 +184,12 @@
             color: var(--highlight-color);
             font-size: 1em;
             font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
         }
 
         .metric-box p {
-            /* FIX: Decreased font size from 2.2em to 1.8em to prevent overflow */
+            /* Font Consistency Fix: Using Orbitron for metric values */
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.8em; 
             font-weight: 700;
             color: var(--success-color);
@@ -217,7 +210,7 @@
             display: none;
         }
 
-        /* Cost Breakdown Visualization (Simulated) */
+        /* Cost Breakdown Visualization */
         .cost-breakdown {
             margin-top: 30px;
             padding-top: 20px;
@@ -226,6 +219,8 @@
         
         .cost-breakdown h3 {
             color: var(--highlight-color);
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 25px;
         }
 
         .chart-container {
@@ -233,10 +228,12 @@
             height: 150px;
             gap: 10px;
             margin-top: 15px;
+            justify-content: space-around;
         }
 
         .bar {
             flex: 1;
+            max-width: 150px;
             background-color: #4a4a58;
             display: flex;
             flex-direction: column-reverse;
@@ -265,6 +262,43 @@
             font-size: 0.7em;
             color: var(--highlight-color);
             text-align: center;
+        }
+        
+        /* Future Prediction Graph Styling */
+        #futureGraphContainer {
+            margin-top: 50px;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background-color: #1a1a24;
+            position: relative;
+        }
+
+        #futureGraph {
+            width: 100%;
+            height: 250px;
+            border: 1px solid #333;
+            background: linear-gradient(to top, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            font-size: 0.8em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
         }
         
         /* Provisioning Button */
@@ -319,24 +353,132 @@
         .modal-content p {
             color: var(--text-color);
             margin-bottom: 20px;
+            font-family: 'Roboto Mono', monospace;
         }
+        
+        /* --- CHAT BOT STYLES --- */
+        #bot-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 900;
+        }
+
+        #bot-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            cursor: pointer;
+            font-size: 1.5em;
+            box-shadow: var(--glow-filter), 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+        }
+
+        #bot-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        #bot-window {
+            width: 300px;
+            height: 400px;
+            background-color: var(--card-color);
+            border-radius: 10px;
+            box-shadow: var(--glow-filter);
+            border: 2px solid var(--accent-color);
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            overflow: hidden;
+            display: none; /* Hidden by default */
+        }
+
+        #bot-header {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            padding: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        #bot-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            border-bottom: 1px solid #333;
+        }
+
+        .bot-message, .user-query {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 15px;
+            max-width: 80%;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .bot-message {
+            background-color: #333;
+            color: var(--text-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-query {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .suggestion-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .suggestion-list button {
+            background: none;
+            border: 1px solid var(--highlight-color);
+            color: var(--highlight-color);
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.85em;
+            transition: background-color 0.2s;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .suggestion-list button:hover {
+            background-color: #2a2a38;
+        }
+
     </style>
 </head>
 <body>
     <div id="provisionModal" class="modal">
         <div class="modal-content">
             <h3>&#9889; Provisioning Simulation Complete &#9889;</h3>
-            <p id="modal-text">IaC Automation successful. 100TB of storage provisioned to GCP (Cloud Storage Nearline).</p>
+            <p id="modal-text">IaC Automation successful. Storage solution provisioned to the optimal tier.</p>
             <button onclick="document.getElementById('provisionModal').style.display='none'" class="submit-btn" style="background-color: var(--accent-color); width: auto;">Close Terminal</button>
         </div>
     </div>
 
     <header>
         <div class="logo">AI-Driven Storage Optimization</div>
-        <nav>
-            <a href="#input">Input Metrics</a>
-            <a href="#output">Optimization Results</a>
-        </nav>
     </header>
 
     <main>
@@ -344,18 +486,7 @@
             <h2>🔮 Predictive Input & Policy Engine</h2>
             <form id="optimizerForm">
                 <div class="input-grid">
-                    <!-- Row 1 -->
-                    <div class="form-group">
-                        <label for="cloudProvider">Target Clouds (Multi-Select)</label>
-                        <select id="cloudProvider" multiple required>
-                            <option value="AWS">Amazon Web Services (AWS)</option>
-                            <option value="Azure">Microsoft Azure</option>
-                            <option value="GCP" selected>Google Cloud Platform (GCP)</option>
-                            <option value="OCI">Oracle Cloud Infrastructure (OCI)</option>
-                            <option value="AliCloud">Alibaba Cloud (AliCloud)</option>
-                            <option value="IBMCloud">IBM Cloud</option>
-                        </select>
-                    </div>
+                    <!-- Target Cloud removal: The AI now selects the optimal cloud internally -->
 
                     <div class="form-group">
                         <label for="dataSize">Data Volume (TB)</label>
@@ -367,13 +498,11 @@
                         <input type="number" id="accessFrequency" value="50" min="1" required>
                     </div>
 
-                    <!-- New Feature: Forecasting Horizon -->
                     <div class="form-group">
                         <label for="forecastWindow">Forecasting Horizon (Months)</label>
                         <input type="number" id="forecastWindow" value="12" min="1" required>
                     </div>
                     
-                    <!-- Row 2 -->
                     <div class="form-group">
                         <label for="compliance">Compliance Policy (e.g., GDPR, HIPAA)</label>
                         <input type="text" id="compliance" value="GDPR" placeholder="e.g., GDPR, HIPAA" required>
@@ -384,8 +513,8 @@
                         <input type="number" id="budget" value="5000" min="100" required>
                     </div>
 
-                    <!-- New Feature: Anomaly Detection Simulation -->
-                    <div class="form-group">
+                    <!-- Anomaly Detection Checkbox -->
+                    <div class="form-group" style="grid-column: span 1 / auto;">
                         <div class="checkbox-group">
                             <input type="checkbox" id="injectAnomaly">
                             <label for="injectAnomaly" style="color: var(--error-color);">Simulate Access Anomaly Detection?</label>
@@ -398,7 +527,7 @@
         </section>
 
         <section id="output" class="card hidden">
-            <h2>✅ Optimization Recommendation</h2>
+            <h2><span style="color: var(--success-color);">&#10003;</span> Optimization Recommendation</h2>
             
             <div id="anomalyAlert" class="anomaly-alert">
                 <p>&#9888; **ANOMALY DETECTED (TPR 94%):** Predicted access spike in the next <span id="alert-months"></span> months. Recommendation has been proactively shifted to a **Warmer Tier** to prevent high egress costs and latency penalties.</p>
@@ -423,122 +552,387 @@
                 </div>
             </div>
             
-            <!-- New Feature: Cost Breakdown Visualization (Simulated) -->
-            <div class="cost-breakdown">
-                <h3>Cost Allocation Breakdown (Optimized vs. Baseline)</h3>
-                <div class="chart-container">
-                    <div class="bar">
-                        <div class="bar-fill" id="bar-original" style="height: 100%;"></div>
-                        <span class="bar-label" id="label-original">$8,500</span>
-                        <span class="bar-title">Baseline Cost</span>
-                    </div>
-                    <div class="bar">
-                        <div class="bar-fill" id="bar-optimized" style="height: 65%;"></div>
-                        <span class="bar-label" id="label-optimized">$5,550</span>
-                        <span class="bar-title">Optimized Cost</span>
-                    </div>
-                    <div class="bar">
-                        <div class="bar-fill" id="bar-egress" style="height: 15%;"></div>
-                        <span class="bar-label" id="label-egress">$300</span>
-                        <span class="bar-title">Egress Fees (Predicted)</span>
-                    </div>
-                    <div class="bar">
-                        <div class="bar-fill" id="bar-retrieval" style="height: 5%;"></div>
-                        <span class="bar-label" id="label-retrieval">$100</span>
-                        <span class="bar-title">Retrieval Fees</span>
-                    </div>
+            <!-- Future Prediction Graph -->
+            <div id="futureGraphContainer">
+                <h3 style="color: var(--highlight-color); margin-bottom: 20px; font-family: 'Orbitron', sans-serif;">Future Predicted Cost vs. Budget (Next <span id="graph-months">12</span> Months)</h3>
+                <canvas id="futureGraph"></canvas>
+                <div class="chart-legend">
+                    <div class="legend-item"><span class="legend-color" style="background-color: var(--success-color);"></span> Predicted Optimized Cost</div>
+                    <div class="legend-item"><span class="legend-color" style="background-color: var(--error-color);"></span> Max Budget Threshold</div>
                 </div>
             </div>
 
-            <div class="explanation" style="margin-top: 40px;">
+            <!-- Cost Breakdown Visualization (Simulated) -->
+            <div class="cost-breakdown">
+                <h3>Cost Allocation Breakdown (Optimized vs. Baseline)</h3>
+                <div class="chart-container" id="costBreakdownChart">
+                    <!-- Bars are dynamically inserted here -->
+                </div>
+            </div>
+
+            <div class="explanation" style="margin-top: 40px; padding-top: 20px; border-top: 1px dashed #444;">
                 <h3>Transparency & Explanation (XAI)</h3>
                 <p id="resultExplanation">Run the optimization loop to generate an explainable decision.</p>
             </div>
 
-            <!-- New Feature: Real-Time Provisioning Button -->
             <button id="provisionButton" class="provision-btn">Simulate Provisioning via Terraform (IaC) →</button>
         </section>
     </main>
     
+    <!-- Virtual Assistant Bot Interface -->
+    <div id="bot-container">
+        <button id="bot-toggle">&#x2753;</button>
+        <div id="bot-window">
+            <div id="bot-header">AI Assistant</div>
+            <div id="bot-messages">
+                <!-- Initial Bot Message -->
+            </div>
+        </div>
+    </div>
+    
     <!-- 3. JAVASCRIPT LOGIC -->
     <script>
-        // Function to handle form submission and optimization simulation
+        // Global variable to hold the last optimization results for the bot to reference
+        let currentOptimizationResults = null;
+        
+        // --- Helper Functions for Data Simulation ---
+
+        // Simple utility to format numbers as currency
+        const formatCurrency = (num) => `$${Math.round(num).toLocaleString()}`;
+        
+        // Data structure for simulated cloud options (Baseline: Standard Hot, Optimized: Tiered)
+        const storageOptions = {
+            AWS: {
+                standard: { tier: 'AWS (S3 Standard)', multiplier: 1.0, costFactor: 0.023 },
+                low_access: { tier: 'AWS (S3 Infrequent Access)', multiplier: 0.65, costFactor: 0.0125 },
+                archive: { tier: 'AWS (S3 Glacier Instant)', multiplier: 0.35, costFactor: 0.004 },
+            },
+            Azure: {
+                standard: { tier: 'Azure (Hot Blob Storage)', multiplier: 1.0, costFactor: 0.021 },
+                low_access: { tier: 'Azure (Cool Blob Storage)', multiplier: 0.68, costFactor: 0.012 },
+                archive: { tier: 'Azure (Archive Blob Storage)', multiplier: 0.30, costFactor: 0.002 },
+            },
+            GCP: {
+                standard: { tier: 'GCP (Standard Storage)', multiplier: 1.0, costFactor: 0.020 },
+                low_access: { tier: 'GCP (Nearline Storage)', multiplier: 0.60, costFactor: 0.01 },
+                archive: { tier: 'GCP (Coldline Storage)', multiplier: 0.40, costFactor: 0.007 },
+            }
+        };
+
+        // Core AI Decision Engine Simulation
+        function calculateOptimization(dataSize, accessFrequency, budget, compliance, anomaly) {
+            
+            // AI determines the optimal cloud based on multi-cloud logic
+            let selectedCloud;
+            if (accessFrequency > 60) {
+                // Very high access, requires premium performance (Simulated preference)
+                selectedCloud = 'AWS'; 
+            } else if (dataSize > 300 && accessFrequency < 5) {
+                // Massive archive, needs ultra-low deep storage price (Simulated preference)
+                selectedCloud = 'GCP'; 
+            } else {
+                // Balanced/Moderate workload or moderate archive (Simulated preference)
+                selectedCloud = 'Azure';
+            }
+            
+            let options = storageOptions[selectedCloud];
+            let finalRecommendation = options.standard;
+            let baseMultiplier = 1.0;
+            let latencyReduction = '≈10%';
+            let rationale = `The AI selected **${selectedCloud}** as the optimal cloud provider for this workload. `;
+
+            // 1. Initial Tier Selection based on Access Frequency (ML Simulation)
+            if (accessFrequency < 10) {
+                finalRecommendation = options.archive;
+                baseMultiplier = 0.35;
+                latencyReduction = '≈15%';
+                rationale += `Extremely low access frequency indicates an archival workload, maximizing savings at the deepest tier (${finalRecommendation.tier}).`;
+            } else if (accessFrequency < 50) {
+                finalRecommendation = options.low_access;
+                baseMultiplier = 0.65;
+                latencyReduction = '≈30%';
+                rationale += `Infrequent access pattern requires a cost-effective warm tier (${finalRecommendation.tier}) to balance retrieval speed and monthly storage cost.`;
+            } else {
+                 finalRecommendation = options.standard;
+                baseMultiplier = 1.0;
+                latencyReduction = '≈10%';
+                rationale += `High access frequency necessitates a standard tier (${finalRecommendation.tier}) to maintain low latency and avoid retrieval penalties.`;
+            }
+            
+            // 2. Anomaly Override (Proactive Mitigation)
+            if (anomaly && baseMultiplier < 1.0) { // If an anomaly is detected and we are currently in a cold tier
+                finalRecommendation = options.low_access; // Shift to a warmer tier (e.g., Nearline/Cool)
+                baseMultiplier = options.low_access.multiplier + 0.05; // Slightly less optimized cost
+                latencyReduction = '≈25%';
+                rationale = `ANOMALY OVERRIDE: Predicted spike requires shifting from a cold tier to **${finalRecommendation.tier}** to avoid massive egress/retrieval penalty costs and maintain data availability.`;
+            }
+
+            // 3. Compliance/DataSize Adjustment
+            if (compliance.toUpperCase().includes('HIPAA')) {
+                // HIPAA often favors specialized tiers or regions, slightly increasing cost/reducing savings
+                baseMultiplier += 0.05;
+                latencyReduction = '≈20%';
+                rationale += ` Strict HIPAA policy factored in, slightly increasing the final solution cost due to specialized compliance overhead.`;
+            }
+
+            // 4. Cost Calculation (Simple linear model)
+            // Baseline Cost (Simulated S3 Standard/Hot): $0.025/GB/mo or $25/TB/mo * dataSize
+            const baselineCost = 25 * dataSize + (accessFrequency * 0.05 * dataSize); 
+            
+            // Optimized Cost: Storage cost + (Access cost * multiplier)
+            let optimizedCost = (finalRecommendation.costFactor * 1000 * dataSize) + (accessFrequency * 0.02 * dataSize * baseMultiplier);
+            
+            // Egress/Retrieval Cost (Simulated, higher for archival tiers)
+            let retrievalFee = (1 - baseMultiplier) * 500; 
+            let egressFee = (accessFrequency / 100) * 800;
+            
+            if (anomaly) {
+                retrievalFee = 200; // Anomaly means we pre-emptively reduced the penalty
+            }
+
+            optimizedCost += retrievalFee + egressFee;
+
+
+            // Final Savings
+            const savings = ((baselineCost - optimizedCost) / baselineCost) * 100;
+            
+            // Apply budget constraint penalty if needed
+            if (optimizedCost > budget) {
+                optimizedCost = budget; 
+                savings = 0;
+                finalRecommendation = options.standard;
+                rationale = `BUDGET VIOLATION: The optimal technical solution of **${finalRecommendation.tier}** exceeded the $${budget.toLocaleString()} budget. AI defaulted to the lowest-cost acceptable standard tier.`;
+            }
+
+
+            return {
+                providerTier: finalRecommendation.tier,
+                savings: Math.max(0, savings), // Savings cannot be negative
+                latencyReduction: latencyReduction,
+                baselineCost: baselineCost,
+                optimizedCost: optimizedCost,
+                retrievalFee: retrievalFee,
+                egressFee: egressFee,
+                rationale: rationale,
+                anomaly: anomaly,
+                budget: budget
+            };
+        }
+
+        // --- DOM Manipulation Functions (Cost Breakdown and Graph are unchanged) ---
+        function updateCostBreakdown(baseline, optimized, egress, retrieval) {
+            const chartContainer = document.getElementById('costBreakdownChart');
+            chartContainer.innerHTML = ''; 
+            const maxCost = Math.max(baseline, optimized) * 1.05;
+
+            const data = [
+                { title: 'Baseline Cost', value: baseline, id: 'original', color: 'var(--accent-color)' },
+                { title: 'Optimized Cost', value: optimized, id: 'optimized', color: 'var(--success-color)' },
+                { title: 'Egress Fees (Predicted)', value: egress, id: 'egress', color: 'var(--error-color)' },
+                { title: 'Retrieval Fees', value: retrieval, id: 'retrieval', color: 'var(--highlight-color)' },
+            ];
+
+            data.forEach(item => {
+                const heightPercent = Math.min(100, (item.value / maxCost) * 100);
+                
+                const barHtml = `
+                    <div class="bar">
+                        <div class="bar-fill" id="bar-${item.id}" style="height: ${heightPercent}%; background-color: ${item.color};"></div>
+                        <span class="bar-label" id="label-${item.id}">${formatCurrency(item.value)}</span>
+                        <span class="bar-title">${item.title}</span>
+                    </div>
+                `;
+                chartContainer.insertAdjacentHTML('beforeend', barHtml);
+            });
+        }
+        
+        function updateFuturePredictionGraph(budget, optimizedCost, forecastWindow) {
+            const canvas = document.getElementById('futureGraph');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            const scale = window.devicePixelRatio;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            canvas.width = Math.floor(width * scale);
+            canvas.height = Math.floor(height * scale);
+            ctx.scale(scale, scale);
+
+            ctx.clearRect(0, 0, width, height);
+
+            const months = parseInt(forecastWindow);
+            const dataPoints = [];
+            for (let i = 0; i <= months; i++) {
+                const factor = 1 + (i / months) * 0.1; 
+                dataPoints.push(optimizedCost * factor);
+            }
+
+            const maxDataValue = Math.max(budget * 1.1, ...dataPoints);
+            const padding = 30;
+            const xStep = (width - 2 * padding) / months;
+            const yMax = height - 2 * padding;
+
+            ctx.fillStyle = '#666';
+            ctx.font = "10px 'Roboto Mono'";
+            for (let i = 0; i <= months; i += Math.max(1, Math.round(months / 6))) {
+                const x = padding + i * xStep;
+                ctx.fillText(i.toString(), x, height - padding + 15);
+            }
+            
+            ctx.fillStyle = 'var(--text-color)';
+            ctx.textAlign = 'right';
+            ctx.fillText(formatCurrency(budget), padding - 5, (height - padding) - (budget / maxDataValue * yMax));
+
+            const budgetY = (height - padding) - (budget / maxDataValue * yMax);
+            ctx.strokeStyle = 'var(--error-color)';
+            ctx.setLineDash([5, 5]); 
+            ctx.beginPath();
+            ctx.moveTo(padding, budgetY);
+            ctx.lineTo(width - padding, budgetY);
+            ctx.stroke();
+
+            ctx.strokeStyle = 'var(--success-color)';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([]); 
+            ctx.beginPath();
+            
+            dataPoints.forEach((value, index) => {
+                const x = padding + index * xStep;
+                const y = (height - padding) - (value / maxDataValue * yMax);
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+                ctx.fillStyle = 'var(--success-color)';
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.stroke();
+            
+            document.getElementById('graph-months').textContent = forecastWindow;
+        }
+
+        // --- Chat Bot Logic ---
+
+        function appendMessage(sender, text, suggestions = []) {
+            const messagesDiv = document.getElementById('bot-messages');
+            const msgContainer = document.createElement('div');
+            
+            if (sender === 'bot') {
+                msgContainer.className = 'bot-message';
+                msgContainer.innerHTML = text;
+                
+                if (suggestions.length > 0) {
+                    const ul = document.createElement('ul');
+                    ul.className = 'suggestion-list';
+                    suggestions.forEach(s => {
+                        const li = document.createElement('li');
+                        const btn = document.createElement('button');
+                        btn.textContent = s;
+                        btn.onclick = () => handleBotInput(s);
+                        li.appendChild(btn);
+                        ul.appendChild(li);
+                    });
+                    msgContainer.appendChild(ul);
+                }
+
+            } else {
+                msgContainer.className = 'user-query';
+                msgContainer.textContent = text;
+            }
+
+            messagesDiv.appendChild(msgContainer);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll to bottom
+        }
+
+        function handleBotInput(query) {
+            appendMessage('user', query);
+
+            if (!currentOptimizationResults) {
+                appendMessage('bot', "Please run the **AI Optimization Loop** first to generate results I can analyze!");
+                return;
+            }
+
+            const res = currentOptimizationResults;
+            let responseText = "I'm sorry, I don't have a canned response for that specific question. Try one of the suggestions below.";
+
+            const q = query.toLowerCase();
+
+            if (q.includes('savings')) {
+                responseText = `The AI projects **${res.savings.toFixed(1)}%** in monthly savings by using the recommended tier: **${res.providerTier}**.`;
+            } else if (q.includes('anomaly')) {
+                if (res.anomaly) {
+                    responseText = `**Anomaly Status:** ACTIVE. The system detected a potential spike and preemptively selected a warmer tier (${res.providerTier}) to save you from huge retrieval penalties.`;
+                } else {
+                    responseText = `**Anomaly Status:** INACTIVE. Access patterns look stable, allowing us to maintain the deepest possible storage tier for maximum savings.`;
+                }
+            } else if (q.includes('baseline')) {
+                responseText = `Your baseline (unoptimized) monthly cost is estimated at **${formatCurrency(res.baselineCost)}**. The optimized cost is **${formatCurrency(res.optimizedCost)}**.`;
+            } else if (q.includes('cloud')) {
+                const provider = res.providerTier.split(' ')[0];
+                responseText = `The AI analyzed the workload and determined **${provider}** is the optimal cloud provider based on your inputs and cost models for the recommended tier.`;
+            } else if (q.includes('cost breakdown')) {
+                responseText = `The current month's estimated cost breakdown includes: Storage: ${formatCurrency(res.optimizedCost - res.egressFee - res.retrievalFee)}, Egress Fees: ${formatCurrency(res.egressFee)}, Retrieval Fees: ${formatCurrency(res.retrievalFee)}.`;
+            }
+
+            // Simple delay for a more 'responsive' feel
+            setTimeout(() => {
+                appendMessage('bot', responseText, [
+                    'What are the projected savings?', 
+                    'What is the baseline cost?', 
+                    'What is the anomaly status?',
+                    'Explain the cost breakdown.',
+                    'Why did the AI choose this cloud?'
+                ]);
+            }, 500);
+        }
+
+        document.getElementById('bot-toggle').addEventListener('click', () => {
+            const botWindow = document.getElementById('bot-window');
+            botWindow.style.display = botWindow.style.display === 'flex' ? 'none' : 'flex';
+            if (botWindow.style.display === 'flex') {
+                 // Initial greeting
+                if (document.getElementById('bot-messages').children.length === 0) {
+                    handleBotInput('hello'); // Triggers initial response with suggestions
+                }
+            }
+        });
+        
+        // --- Main Form Event Listener ---
         document.getElementById('optimizerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             // 1. Get Input Values
             const dataSize = parseFloat(document.getElementById('dataSize').value);
+            const accessFrequency = parseFloat(document.getElementById('accessFrequency').value);
             const compliance = document.getElementById('compliance').value;
+            const budget = parseFloat(document.getElementById('budget').value);
             const forecastWindow = document.getElementById('forecastWindow').value;
             const injectAnomaly = document.getElementById('injectAnomaly').checked;
-            const providers = Array.from(document.getElementById('cloudProvider').selectedOptions).map(option => option.value);
 
-            // 2. Variables for Simulation Results
-            let optimalProvider = 'GCP (Cloud Storage Nearline)'; 
-            let savingsPercent = 34.6; 
-            let latencyReduction = '≈40%';
-            let explanationDetail = 'Cost-performance trade-off favored the optimal nearline tier.';
-            let anomalyDetected = false;
-
-            // --- Decision Logic ---
-            if (providers.length === 0) {
-                 optimalProvider = 'ERROR: Select a Provider';
-                 savingsPercent = 0;
-                 latencyReduction = 'N/A';
-                 explanationDetail = 'Please select at least one target cloud provider.';
-            } else if (dataSize > 500 && providers.includes('AWS')) {
-                optimalProvider = 'AWS (S3-IA Tier)'; 
-                savingsPercent = 34.0;
-                explanationDetail = 'Large data volume preference led to the most established IA tier.';
-            } else if (compliance.toUpperCase().includes('HIPAA') && providers.includes('Azure')) {
-                optimalProvider = 'Azure (Cool Blob Storage)'; 
-                savingsPercent = 32.9;
-                explanationDetail = 'HIPAA compliance requirement triggered a selection in a high-compliance region.';
-            } else if (providers.includes('OCI')) {
-                optimalProvider = 'OCI (Archival Storage)'; 
-                savingsPercent = 35.5;
-                explanationDetail = 'Predicted high archival need over 12 months favored a deep archive tier.';
-            } else if (providers.includes('AliCloud')) {
-                optimalProvider = 'AliCloud (Low Frequency Access)'; 
-                savingsPercent = 33.8;
-                explanationDetail = 'Cost optimization for APAC region latency favored this provider.';
-            } else if (providers.includes('IBMCloud')) {
-                optimalProvider = 'IBM Cloud (Cloud Object Storage)'; 
-                savingsPercent = 32.5;
-                explanationDetail = 'Compliance requirement for financial data favored this provider.';
-            } else {
-                // Default or GCP fallback
-                optimalProvider = 'GCP (Cloud Storage Nearline)'; 
-                savingsPercent = 34.6;
-                explanationDetail = 'Cost-performance trade-off favored the optimal nearline tier for long-term prediction.';
-            }
+            // 2. Run the AI Simulation (Note: 'cloudFocus' parameter is removed)
+            const results = calculateOptimization(
+                dataSize, 
+                accessFrequency, 
+                budget, 
+                compliance, 
+                injectAnomaly
+            );
             
-            // --- Anomaly Logic (Overrides Tier if needed) ---
-            if (injectAnomaly) {
-                anomalyDetected = true;
-                // Proactively shift to a warmer, more expensive tier to prevent huge penalty costs
-                if (optimalProvider.includes('Nearline') || optimalProvider.includes('Archival') || optimalProvider.includes('Cool')) {
-                    // Update tier but keep provider name
-                    const providerName = optimalProvider.split('(')[0].trim();
-                    optimalProvider = `${providerName} (Standard/Hot Storage)`;
-                    savingsPercent = Math.max(25, savingsPercent - 5); // Reduce savings but still save
-                    explanationDetail = `ANOMALY OVERRIDE: Proactively shifted to **${optimalProvider}** (Warmer Tier) to mitigate ${forecastWindow}-month access spike predicted by the AI.`;
-                } else {
-                    explanationDetail = `ANOMALY DETECTED: The current **${optimalProvider}** tier is already appropriate for the predicted spike.`;
-                }
-            }
-
+            // Store results globally for the bot
+            currentOptimizationResults = results;
 
             // 3. Display Results
-            document.getElementById('resultProvider').textContent = optimalProvider;
-            document.getElementById('resultSavings').textContent = `${savingsPercent.toFixed(1)}%`;
-            document.getElementById('resultLatency').textContent = latencyReduction;
+            document.getElementById('resultProvider').textContent = results.providerTier;
+            document.getElementById('resultSavings').textContent = `${results.savings.toFixed(1)}%`;
+            document.getElementById('resultLatency').textContent = results.latencyReduction;
             
-            document.getElementById('resultAutomation').innerHTML = '&ge; 95%';
-            
-            // Show/Hide Anomaly Alert
+            // Anomaly Alert logic
             const alertElement = document.getElementById('anomalyAlert');
-            if (anomalyDetected) {
+            if (results.anomaly) {
                 alertElement.style.display = 'block';
                 document.getElementById('alert-months').textContent = forecastWindow;
             } else {
@@ -547,37 +941,29 @@
 
             // 4. Update Explainable AI (XAI) text
             document.getElementById('resultExplanation').innerHTML = `
-                The AI determined this choice based on a **${forecastWindow}-month** predictive model. It successfully balanced the **cost** (${savingsPercent.toFixed(1)}%) 
-                and **performance** (${latencyReduction} latency reduction) trade-offs against the strict **${compliance.toUpperCase()}** compliance requirement. 
-                **Specific Decision Rationale:** ${explanationDetail}
+                The AI performed multi-objective optimization over a **${forecastWindow}-month** horizon. It found the optimal balance between cost, latency, 
+                and the **${compliance.toUpperCase()}** compliance requirements based on the predicted **${accessFrequency}M** monthly reads. 
+                **Decision Rationale:** ${results.rationale}
             `;
 
-            // 5. Update Cost Breakdown Visualization (Simulated)
-            const baselineCost = 8500;
-            const optimizedCost = baselineCost * (1 - savingsPercent / 100);
+            // 5. Update Visualizations
+            updateCostBreakdown(
+                results.baselineCost, 
+                results.optimizedCost, 
+                results.egressFee, 
+                results.retrievalFee
+            );
             
-            // Update bar heights (as percentages of baseline, capped at 100%)
-            const barOriginal = 100;
-            const barOptimized = Math.round((optimizedCost / baselineCost) * 100);
-            const barEgress = Math.round((300 / baselineCost) * 100);
-            const barRetrieval = Math.round((100 / baselineCost) * 100);
-            
-            document.getElementById('bar-original').style.height = `${barOriginal}%`;
-            document.getElementById('bar-optimized').style.height = `${barOptimized}%`;
-            document.getElementById('bar-egress').style.height = `${barEgress}%`;
-            document.getElementById('bar-retrieval').style.height = `${barRetrieval}%`;
-            
-            document.getElementById('label-original').textContent = `$${baselineCost.toLocaleString()}`;
-            document.getElementById('label-optimized').textContent = `$${optimizedCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
-            document.getElementById('label-egress').textContent = '$300';
-            document.getElementById('label-retrieval').textContent = '$100';
-
+            // Use window.setTimeout to ensure canvas is rendered before drawing
+            setTimeout(() => {
+                updateFuturePredictionGraph(budget, results.optimizedCost, forecastWindow);
+            }, 100);
 
             // 6. Provisioning Button Logic
             document.getElementById('provisionButton').onclick = function() {
                 const modal = document.getElementById('provisionModal');
                 document.getElementById('modal-text').textContent = 
-                    `IaC Automation successful. ${dataSize}TB of storage provisioned to ${optimalProvider} with a ${savingsPercent.toFixed(1)}% projected saving.`;
+                    `IaC Automation successful. ${dataSize}TB of storage provisioned to ${results.providerTier} with a ${results.savings.toFixed(1)}% projected saving.`;
                 modal.style.display = 'flex';
             };
 
@@ -585,7 +971,32 @@
             // 7. Show the Output section and scroll
             document.getElementById('output').classList.remove('hidden');
             document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
+            
+            // Reset chat history
+            document.getElementById('bot-messages').innerHTML = '';
+            appendMessage('bot', "Optimization complete! I've analyzed the new results. How can I help?", [
+                'What are the projected savings?', 
+                'What is the baseline cost?', 
+                'What is the anomaly status?',
+                'Why did the AI choose this cloud?'
+            ]);
         });
+        
+        // Initial setup for the graph to prevent blank space on load
+        window.onload = function() {
+            const initialBudget = parseFloat(document.getElementById('budget').value);
+            const initialOptimized = initialBudget * 0.7; // Placeholder value
+            const initialForecast = document.getElementById('forecastWindow').value;
+            updateFuturePredictionGraph(initialBudget, initialOptimized, initialForecast);
+            
+            // Initial message for the closed bot
+            document.getElementById('bot-messages').innerHTML = '';
+            appendMessage('bot', "Hello! I'm your AI Assistant. Run the optimization loop, and I can analyze the results for you.", [
+                'What are the projected savings?', 
+                'What is the baseline cost?', 
+                'What is the anomaly status?'
+            ]);
+        };
     </script>
 </body>
 </html>
