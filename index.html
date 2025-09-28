@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Multi-Cloud Storage Optimizer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- 1. Google Font for Futuristic Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     
+    <!-- 2. CSS STYLING (Significantly Enhanced for a Futuristic Look) -->
     <style>
         :root {
-            --bg-color: #121212;
-            --card-color: #1e1e1e;
-            --text-color: #e0e0e0;
-            --accent-color: #00bcd4; /* Cyan/Teal for a futuristic feel */
-            --shadow-color: rgba(0, 188, 212, 0.4);
-            --error-color: #ff5252;
+            --bg-color: #0d0d12; /* Deep space black */
+            --card-color: #1e1e2c; /* Dark indigo card */
+            --text-color: #e0f7fa; /* Light cyan text */
+            --accent-color: #00e5ff; /* Neon Cyan */
+            --highlight-color: #82b1ff; /* Light blue glow */
+            --error-color: #ff3d00; /* Neon red */
+            --success-color: #69f0ae; /* Neon green */
+            --glow-filter: 0 0 8px var(--accent-color);
         }
 
         body {
@@ -32,53 +36,65 @@
             width: 100%;
             background-color: var(--card-color);
             padding: 20px 0;
-            box-shadow: 0 4px 12px var(--shadow-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), var(--glow-filter);
             display: flex;
             justify-content: space-around;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5em;
-            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            font-weight: 900;
             color: var(--accent-color);
+            text-shadow: var(--glow-filter);
+            letter-spacing: 2px;
         }
 
         nav a {
             color: var(--text-color);
             text-decoration: none;
-            margin-left: 20px;
+            margin-left: 25px;
             padding: 5px 10px;
             border-bottom: 2px solid transparent;
-            transition: border-bottom 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         nav a:hover {
-            border-bottom: 2px solid var(--accent-color);
+            border-bottom: 2px solid var(--highlight-color);
+            color: var(--highlight-color);
         }
 
         main {
             padding: 40px 20px;
             width: 90%;
-            max-width: 1000px;
+            max-width: 1100px;
         }
 
         .card {
             background-color: var(--card-color);
             padding: 30px;
             margin-bottom: 30px;
-            border-radius: 10px;
-            border-left: 5px solid var(--accent-color);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            border: 1px solid #333;
+            box-shadow: var(--glow-filter);
         }
 
         h2 {
+            font-family: 'Orbitron', sans-serif;
             color: var(--accent-color);
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
             margin-top: 0;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
         }
 
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
         .form-group {
             margin-bottom: 20px;
         }
@@ -87,23 +103,42 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 700;
-            color: var(--accent-color);
+            color: var(--highlight-color);
+            font-size: 0.9em;
         }
-
+        
         input[type="number"], input[type="text"], select {
             width: 100%;
             padding: 12px;
             border: 1px solid #444;
-            border-radius: 5px;
-            background-color: #2a2a2a;
+            border-radius: 6px;
+            background-color: #2a2a38;
             color: var(--text-color);
             box-sizing: border-box;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: 'Roboto Mono', monospace;
         }
 
         input:focus, select:focus {
             border-color: var(--accent-color);
             outline: none;
+            box-shadow: 0 0 5px var(--accent-color);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            color: var(--text-color);
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            background-color: #2a2a38;
+            border: 1px solid var(--highlight-color);
         }
 
         .submit-btn {
@@ -111,17 +146,21 @@
             color: var(--bg-color);
             border: none;
             padding: 15px 30px;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1.1em;
             font-weight: 700;
-            transition: background-color 0.3s, transform 0.1s;
+            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
             letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            margin-top: 20px;
+            width: 100%;
         }
 
         .submit-btn:hover {
-            background-color: #00a0b2;
+            background-color: var(--highlight-color);
             transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(130, 177, 255, 0.6);
         }
 
         /* Output Section Styling */
@@ -134,42 +173,162 @@
             justify-content: space-between;
             gap: 20px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         .metric-box {
             flex: 1;
+            min-width: 200px;
             padding: 20px;
-            background-color: #2a2a2a;
+            background-color: #2a2a38;
             border-radius: 8px;
             text-align: center;
-            border: 1px solid #444;
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+            transition: all 0.3s;
         }
 
         .metric-box h3 {
             margin-top: 0;
-            color: var(--text-color);
+            color: var(--highlight-color);
             font-size: 1em;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .metric-box p {
-            font-size: 2.5em;
+            font-size: 2.2em;
             font-weight: 700;
-            color: var(--accent-color);
+            color: var(--success-color);
             margin: 5px 0 0 0;
+            text-shadow: 0 0 5px rgba(105, 240, 174, 0.5);
+        }
+        
+        .anomaly-alert {
+            background-color: #3b2a38;
+            border: 2px solid var(--error-color);
+            color: var(--error-color);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-weight: 700;
+            box-shadow: 0 0 10px var(--error-color);
+            display: none;
         }
 
-        .explanation {
-            border-top: 1px dashed #444;
+        /* Cost Breakdown Visualization (Simulated) */
+        .cost-breakdown {
+            margin-top: 30px;
             padding-top: 20px;
+            border-top: 1px dashed #444;
+        }
+        
+        .cost-breakdown h3 {
+            color: var(--highlight-color);
         }
 
-        .explanation h3 {
+        .chart-container {
+            display: flex;
+            height: 150px;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .bar {
+            flex: 1;
+            background-color: #4a4a58;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+        
+        .bar-fill {
+            width: 100%;
+            background-color: var(--accent-color);
+            transition: height 1s ease-out;
+            position: relative;
+        }
+
+        .bar-label {
+            position: absolute;
+            top: -20px;
+            font-size: 0.8em;
             color: var(--text-color);
-            font-size: 1.2em;
+        }
+        
+        .bar-title {
+            position: absolute;
+            bottom: -20px;
+            font-size: 0.7em;
+            color: var(--highlight-color);
+            text-align: center;
+        }
+        
+        /* Provisioning Button */
+        .provision-btn {
+            background-color: var(--success-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(105, 240, 174, 0.7);
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .provision-btn:hover {
+            background-color: #00bfa5;
+            transform: scale(1.02);
+        }
+
+        /* Modal for Provisioning Simulation */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #1e1e2c;
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid var(--success-color);
+            box-shadow: 0 0 25px var(--success-color);
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .modal-content h3 {
+            color: var(--success-color);
+        }
+
+        .modal-content p {
+            color: var(--text-color);
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
+    <div id="provisionModal" class="modal">
+        <div class="modal-content">
+            <h3>&#9889; Provisioning Simulation Complete &#9889;</h3>
+            <p id="modal-text">IaC Automation successful. 100TB of storage provisioned to GCP (Cloud Storage Nearline).</p>
+            <button onclick="document.getElementById('provisionModal').style.display='none'" class="submit-btn" style="background-color: var(--accent-color); width: auto;">Close Terminal</button>
+        </div>
+    </div>
+
     <header>
         <div class="logo">AI-Driven Storage Optimization</div>
         <nav>
@@ -182,32 +341,54 @@
         <section id="input" class="card">
             <h2>🔮 Predictive Input & Policy Engine</h2>
             <form id="optimizerForm">
-                <div class="form-group">
-                    <label for="cloudProvider">Target Clouds (Multi-Select)</label>
-                    <select id="cloudProvider" multiple required>
-                        <option value="AWS">Amazon Web Services (AWS)</option>
-                        <option value="Azure">Microsoft Azure</option>
-                        <option value="GCP" selected>Google Cloud Platform (GCP)</option> </select>
-                </div>
+                <div class="input-grid">
+                    <!-- Row 1 -->
+                    <div class="form-group">
+                        <label for="cloudProvider">Target Clouds (Multi-Select)</label>
+                        <select id="cloudProvider" multiple required>
+                            <option value="AWS">Amazon Web Services (AWS)</option>
+                            <option value="Azure">Microsoft Azure</option>
+                            <option value="GCP" selected>Google Cloud Platform (GCP)</option>
+                            <option value="OCI">Oracle Cloud Infrastructure (OCI)</option>
+                            <option value="AliCloud">Alibaba Cloud (AliCloud)</option>
+                            <option value="IBMCloud">IBM Cloud</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="dataSize">Data Volume (TB)</label>
-                    <input type="number" id="dataSize" value="100" min="1" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="accessFrequency">Access Frequency (Reads/Month, in Millions)</label>
-                    <input type="number" id="accessFrequency" value="50" min="1" required>
-                </div>
+                    <div class="form-group">
+                        <label for="dataSize">Data Volume (TB)</label>
+                        <input type="number" id="dataSize" value="100" min="1" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="compliance">Compliance Policy (e.g., GDPR, HIPAA)</label>
-                    <input type="text" id="compliance" value="GDPR" placeholder="e.g., GDPR, HIPAA" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="budget">Max Monthly Budget ($)</label>
-                    <input type="number" id="budget" value="5000" min="100" required>
+                    <div class="form-group">
+                        <label for="accessFrequency">Access Frequency (Reads/Month, in Millions)</label>
+                        <input type="number" id="accessFrequency" value="50" min="1" required>
+                    </div>
+
+                    <!-- New Feature: Forecasting Horizon -->
+                    <div class="form-group">
+                        <label for="forecastWindow">Forecasting Horizon (Months)</label>
+                        <input type="number" id="forecastWindow" value="12" min="1" required>
+                    </div>
+                    
+                    <!-- Row 2 -->
+                    <div class="form-group">
+                        <label for="compliance">Compliance Policy (e.g., GDPR, HIPAA)</label>
+                        <input type="text" id="compliance" value="GDPR" placeholder="e.g., GDPR, HIPAA" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="budget">Max Monthly Budget ($)</label>
+                        <input type="number" id="budget" value="5000" min="100" required>
+                    </div>
+
+                    <!-- New Feature: Anomaly Detection Simulation -->
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="injectAnomaly">
+                            <label for="injectAnomaly" style="color: var(--error-color);">Simulate Access Anomaly Detection?</label>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="submit" class="submit-btn">Run AI Optimization Loop →</button>
@@ -216,6 +397,11 @@
 
         <section id="output" class="card hidden">
             <h2>✅ Optimization Recommendation</h2>
+            
+            <div id="anomalyAlert" class="anomaly-alert">
+                <p>&#9888; **ANOMALY DETECTED (TPR 94%):** Predicted access spike in the next <span id="alert-months"></span> months. Recommendation has been proactively shifted to a **Warmer Tier** to prevent high egress costs and latency penalties.</p>
+            </div>
+
             <div id="resultContainer">
                 <div class="metric-box">
                     <h3>Optimal Provider/Tier</h3>
@@ -229,68 +415,159 @@
                     <h3>Projected Latency Reduction</h3>
                     <p id="resultLatency">---</p>
                 </div>
+                <div class="metric-box">
+                    <h3>Automation Level</h3>
+                    <p id="resultAutomation">$\ge 95\%$</p>
+                </div>
             </div>
             
-            <div class="explanation">
+            <!-- New Feature: Cost Breakdown Visualization (Simulated) -->
+            <div class="cost-breakdown">
+                <h3>Cost Allocation Breakdown (Optimized vs. Baseline)</h3>
+                <div class="chart-container">
+                    <div class="bar">
+                        <div class="bar-fill" id="bar-original" style="height: 100%;"></div>
+                        <span class="bar-label" id="label-original">$8,500</span>
+                        <span class="bar-title">Baseline Cost</span>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" id="bar-optimized" style="height: 65%;"></div>
+                        <span class="bar-label" id="label-optimized">$5,550</span>
+                        <span class="bar-title">Optimized Cost</span>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" id="bar-egress" style="height: 15%;"></div>
+                        <span class="bar-label" id="label-egress">$300</span>
+                        <span class="bar-title">Egress Fees (Predicted)</span>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" id="bar-retrieval" style="height: 5%;"></div>
+                        <span class="bar-label" id="label-retrieval">$100</span>
+                        <span class="bar-title">Retrieval Fees</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="explanation" style="margin-top: 40px;">
                 <h3>Transparency & Explanation (XAI)</h3>
                 <p id="resultExplanation">Run the optimization loop to generate an explainable decision.</p>
             </div>
+
+            <!-- New Feature: Real-Time Provisioning Button -->
+            <button id="provisionButton" class="provision-btn">Simulate Provisioning via Terraform (IaC) →</button>
         </section>
     </main>
     
+    <!-- 3. JAVASCRIPT LOGIC -->
     <script>
         document.getElementById('optimizerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             // 1. Get Input Values
-            const dataSize = document.getElementById('dataSize').value;
+            const dataSize = parseFloat(document.getElementById('dataSize').value);
             const compliance = document.getElementById('compliance').value;
-            // Get all selected providers from the multi-select box
+            const forecastWindow = document.getElementById('forecastWindow').value;
+            const injectAnomaly = document.getElementById('injectAnomaly').checked;
             const providers = Array.from(document.getElementById('cloudProvider').selectedOptions).map(option => option.value);
 
-            // 2. Simple Simulation Logic (Based on your project metrics)
-            let optimalProvider = 'GCP'; 
-            let savings = '34.6%'; 
-            let latency = '≈40%';
+            // 2. Variables for Simulation Results
+            let optimalProvider = 'GCP (Cloud Storage Nearline)'; 
+            let savingsPercent = 34.6; 
+            let latencyReduction = '≈40%';
+            let explanationDetail = 'Cost-performance trade-off favored the optimal nearline tier.';
+            let anomalyDetected = false;
 
-            // Custom logic for simulation based on inputs (feel free to expand this)
+            // --- Decision Logic ---
             if (providers.length === 0) {
                  optimalProvider = 'ERROR: Select a Provider';
-                 savings = '0%';
-                 latency = 'N/A';
+                 savingsPercent = 0;
+                 latencyReduction = 'N/A';
+                 explanationDetail = 'Please select at least one target cloud provider.';
             } else if (dataSize > 500 && providers.includes('AWS')) {
                 optimalProvider = 'AWS (S3-IA Tier)'; 
-                savings = '34.0%';
+                savingsPercent = 34.0;
+                explanationDetail = 'Large data volume preference led to the most established IA tier.';
             } else if (compliance.toUpperCase().includes('HIPAA') && providers.includes('Azure')) {
                 optimalProvider = 'Azure (Cool Blob Storage)'; 
-                savings = '32.9%';
-            } else if (providers.includes('GCP')) {
-                optimalProvider = 'GCP (Cloud Storage Nearline)'; // Default optimized choice
-                savings = '34.6%';
+                savingsPercent = 32.9;
+                explanationDetail = 'HIPAA compliance requirement triggered a selection in a high-compliance region.';
+            } else if (providers.includes('OCI')) {
+                optimalProvider = 'OCI (Archival Storage)'; 
+                savingsPercent = 35.5;
+                explanationDetail = 'Predicted high archival need over 12 months favored a deep archive tier.';
             } else {
-                optimalProvider = providers[0] + ' (Standard Tier)'; // Fallback to first selected
-                savings = '33.5%';
+                // Default or GCP fallback
+                optimalProvider = 'GCP (Cloud Storage Nearline)'; 
+                savingsPercent = 34.6;
+                explanationDetail = 'Cost-performance trade-off favored the optimal nearline tier for long-term prediction.';
             }
             
-            // Use the metrics from your document
-            let averageSavings = savings; // Based on your project results
-            let latencyReduction = '≈40%'; // Based on Latency Improvement ≈40%
+            // --- Anomaly Logic (Overrides Tier if needed) ---
+            if (injectAnomaly) {
+                anomalyDetected = true;
+                // Proactively shift to a warmer, more expensive tier to prevent huge penalty costs
+                if (optimalProvider.includes('Nearline') || optimalProvider.includes('Archival')) {
+                    optimalProvider = optimalProvider.replace(/Nearline|Archival|Cool/g, 'Standard/Hot');
+                    savingsPercent = Math.max(25, savingsPercent - 5); // Reduce savings but still save
+                    explanationDetail = `ANOMALY OVERRIDE: Proactively shifted to **${optimalProvider}** (Warmer Tier) to mitigate ${forecastWindow}-month access spike predicted by the AI.`;
+                } else {
+                    explanationDetail = `ANOMALY DETECTED: The current **${optimalProvider}** tier is already appropriate for the predicted spike.`;
+                }
+            }
+
 
             // 3. Display Results
             document.getElementById('resultProvider').textContent = optimalProvider;
-            document.getElementById('resultSavings').textContent = averageSavings;
+            document.getElementById('resultSavings').textContent = `${savingsPercent.toFixed(1)}%`;
             document.getElementById('resultLatency').textContent = latencyReduction;
+            
+            // Show/Hide Anomaly Alert
+            const alertElement = document.getElementById('anomalyAlert');
+            if (anomalyDetected) {
+                alertElement.style.display = 'block';
+                document.getElementById('alert-months').textContent = forecastWindow;
+            } else {
+                alertElement.style.display = 'none';
+            }
 
             // 4. Update Explainable AI (XAI) text
             document.getElementById('resultExplanation').innerHTML = `
-                The AI determined this choice by balancing the **cost** (${averageSavings}) and **performance** (${latencyReduction} latency reduction) 
-                trade-offs against the strict **${compliance.toUpperCase()}** compliance requirement. 
-                The predictive model (Forecasting Future Needs) identified a moderate access pattern for the next 3-12 months, 
-                recommending the **${optimalProvider}** tier to maximize savings while maintaining performance. 
-                This decision achieves **$\geq 95\%$** automation in resource selection.
+                The AI determined this choice based on a **${forecastWindow}-month** predictive model. It successfully balanced the **cost** (${savingsPercent.toFixed(1)}%) 
+                and **performance** (${latencyReduction} latency reduction) trade-offs against the strict **${compliance.toUpperCase()}** compliance requirement. 
+                **Specific Decision Rationale:** ${explanationDetail}
             `;
 
-            // 5. Show the Output section and scroll
+            // 5. Update Cost Breakdown Visualization (Simulated)
+            const baselineCost = 8500;
+            const optimizedCost = baselineCost * (1 - savingsPercent / 100);
+            
+            // Update bar heights (as percentages of baseline, capped at 100%)
+            const barOriginal = 100;
+            const barOptimized = Math.round((optimizedCost / baselineCost) * 100);
+            const barEgress = Math.round((300 / baselineCost) * 100);
+            const barRetrieval = Math.round((100 / baselineCost) * 100);
+            
+            document.getElementById('bar-original').style.height = `${barOriginal}%`;
+            document.getElementById('bar-optimized').style.height = `${barOptimized}%`;
+            document.getElementById('bar-egress').style.height = `${barEgress}%`;
+            document.getElementById('bar-retrieval').style.height = `${barRetrieval}%`;
+            
+            document.getElementById('label-original').textContent = `$${baselineCost.toLocaleString()}`;
+            document.getElementById('label-optimized').textContent = `$${optimizedCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+            document.getElementById('label-egress').textContent = '$300';
+            document.getElementById('label-retrieval').textContent = '$100';
+
+
+            // 6. Provisioning Button Logic
+            document.getElementById('provisionButton').onclick = function() {
+                const modal = document.getElementById('provisionModal');
+                document.getElementById('modal-text').textContent = 
+                    `IaC Automation successful. ${dataSize}TB of storage provisioned to ${optimalProvider} with a ${savingsPercent.toFixed(1)}% projected saving.`;
+                modal.style.display = 'flex';
+            };
+
+
+            // 7. Show the Output section and scroll
             document.getElementById('output').classList.remove('hidden');
             document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
         });
