@@ -13,9 +13,9 @@
             --bg-color: #0d0d12; 
             --card-color: #1e1e2c; 
             --text-color: #e0f7fa; 
-            --accent-color: #00e5ff; /* Neon Cyan */
+            --accent-color: #00e5ff; /* Neon Cyan (Success) */
             --highlight-color: #82b1ff; /* Light blue glow */
-            --error-color: #ff3d00; /* Neon red */
+            --error-color: #ff3d00; /* Neon red (Failure) */
             --success-color: #69f0ae; /* Neon green */
             --glow-filter: 0 0 8px var(--accent-color);
         }
@@ -86,7 +86,7 @@
         }
         
         .form-group {
-            margin-bottom: 5px; /* Reduced margin for tighter layout */
+            margin-bottom: 5px; 
         }
 
         label {
@@ -148,15 +148,43 @@
             width: 100%;
         }
 
-        .submit-btn:hover {
+        .submit-btn:hover:not(:disabled) {
             background-color: var(--highlight-color);
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(130, 177, 255, 0.6);
+        }
+        
+        .submit-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
         }
 
         /* Output Metrics Styling */
         .hidden {
             display: none;
+        }
+
+        /* Constraint Violation Alert (New) */
+        .violation-alert {
+            background-color: #2c1a1a; /* Darker red background */
+            border: 2px solid var(--error-color);
+            color: var(--text-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px; /* Space above metrics */
+            font-weight: 700;
+            box-shadow: 0 0 15px var(--error-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .violation-alert p:first-child {
+            font-size: 1.1em;
+            color: var(--error-color);
         }
 
         #resultContainer {
@@ -188,11 +216,10 @@
         }
 
         .metric-box p {
-            /* Font Consistency Fix: Using Orbitron for metric values */
             font-family: 'Orbitron', sans-serif;
             font-size: 1.8em; 
             font-weight: 700;
-            color: var(--success-color);
+            color: var(--success-color); /* Default Success Color */
             margin: 5px 0 0 0;
             text-shadow: 0 0 5px rgba(105, 240, 174, 0.5);
             line-height: 1.2; 
@@ -317,9 +344,15 @@
             width: 100%;
         }
 
-        .provision-btn:hover {
+        .provision-btn:hover:not(:disabled) {
             background-color: #00bfa5;
             transform: scale(1.02);
+        }
+        
+        .provision-btn:disabled {
+            background-color: #555;
+            box-shadow: 0 0 10px rgba(255, 61, 0, 0.7);
+            cursor: not-allowed;
         }
 
         /* Modal for Provisioning Simulation */
@@ -356,112 +389,41 @@
             font-family: 'Roboto Mono', monospace;
         }
         
-        /* --- CHAT BOT STYLES --- */
+        /* --- CHAT BOT STYLES (Kept Minimal for brevity) --- */
         #bot-container {
             position: fixed;
             bottom: 30px;
             right: 30px;
             z-index: 900;
         }
-
         #bot-toggle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            border: none;
-            cursor: pointer;
-            font-size: 1.5em;
-            box-shadow: var(--glow-filter), 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
+            width: 60px; height: 60px; border-radius: 50%; background-color: var(--accent-color); color: var(--bg-color); border: none; cursor: pointer; font-size: 1.5em; box-shadow: var(--glow-filter), 0 5px 15px rgba(0, 0, 0, 0.5); transition: transform 0.3s; font-family: 'Orbitron', sans-serif; font-weight: 900;
         }
-
-        #bot-toggle:hover {
-            transform: scale(1.1);
-        }
-
+        #bot-toggle:hover { transform: scale(1.1); }
         #bot-window {
-            width: 300px;
-            height: 400px;
-            background-color: var(--card-color);
-            border-radius: 10px;
-            box-shadow: var(--glow-filter);
-            border: 2px solid var(--accent-color);
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            bottom: 75px;
-            right: 0;
-            overflow: hidden;
-            display: none; /* Hidden by default */
+            width: 300px; height: 400px; background-color: var(--card-color); border-radius: 10px; box-shadow: var(--glow-filter); border: 2px solid var(--accent-color); display: flex; flex-direction: column; position: absolute; bottom: 75px; right: 0; overflow: hidden; display: none;
         }
-
         #bot-header {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            padding: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 1.1em;
-            text-align: center;
+            background-color: var(--accent-color); color: var(--bg-color); padding: 10px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.1em; text-align: center;
         }
-
         #bot-messages {
-            flex-grow: 1;
-            padding: 15px;
-            overflow-y: auto;
-            border-bottom: 1px solid #333;
+            flex-grow: 1; padding: 15px; overflow-y: auto; border-bottom: 1px solid #333;
         }
-
         .bot-message, .user-query {
-            margin-bottom: 10px;
-            padding: 8px 12px;
-            border-radius: 15px;
-            max-width: 80%;
-            font-size: 0.9em;
-            line-height: 1.4;
+            margin-bottom: 10px; padding: 8px 12px; border-radius: 15px; max-width: 80%; font-size: 0.9em; line-height: 1.4;
         }
-
         .bot-message {
-            background-color: #333;
-            color: var(--text-color);
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
+            background-color: #333; color: var(--text-color); align-self: flex-start; border-bottom-left-radius: 5px;
         }
-
         .user-query {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            align-self: flex-end;
-            margin-left: auto;
-            border-bottom-right-radius: 5px;
+            background-color: var(--accent-color); color: var(--bg-color); align-self: flex-end; margin-left: auto; border-bottom-right-radius: 5px;
         }
-        
         .suggestion-list {
-            list-style: none;
-            padding: 0;
-            margin: 10px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            list-style: none; padding: 0; margin: 10px 0; display: flex; flex-direction: column; gap: 5px;
         }
-
         .suggestion-list button {
-            background: none;
-            border: 1px solid var(--highlight-color);
-            color: var(--highlight-color);
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: left;
-            font-size: 0.85em;
-            transition: background-color 0.2s;
-            font-family: 'Roboto Mono', monospace;
+            background: none; border: 1px solid var(--highlight-color); color: var(--highlight-color); padding: 8px; border-radius: 6px; cursor: pointer; text-align: left; font-size: 0.85em; transition: background-color 0.2s; font-family: 'Roboto Mono', monospace;
         }
-
         .suggestion-list button:hover {
             background-color: #2a2a38;
         }
@@ -490,7 +452,7 @@
 
                     <div class="form-group">
                         <label for="dataSize">Data Volume (TB)</label>
-                        <input type="number" id="dataSize" value="100" min="1" required>
+                        <input type="number" id="dataSize" value="1000" min="1" required>
                     </div>
 
                     <div class="form-group">
@@ -500,7 +462,7 @@
 
                     <div class="form-group">
                         <label for="forecastWindow">Forecasting Horizon (Months)</label>
-                        <input type="number" id="forecastWindow" value="12" min="1" required>
+                        <input type="number" id="forecastWindow" value="24" min="1" required>
                     </div>
                     
                     <div class="form-group">
@@ -510,7 +472,7 @@
                     
                     <div class="form-group">
                         <label for="budget">Max Monthly Budget ($)</label>
-                        <input type="number" id="budget" value="5000" min="100" required>
+                        <input type="number" id="budget" value="10000" min="100" required>
                     </div>
 
                     <!-- Anomaly Detection Checkbox -->
@@ -529,6 +491,13 @@
         <section id="output" class="card hidden">
             <h2><span style="color: var(--success-color);">&#10003;</span> Optimization Recommendation</h2>
             
+            <!-- Constraint Violation Alert (New) -->
+            <div id="violationAlert" class="violation-alert hidden">
+                <p id="violationMessage">&#10060; **CRITICAL CONSTRAINT VIOLATION**</p>
+                <p id="violationSolution">Loading reason and solution...</p>
+            </div>
+
+            <!-- Anomaly Alert (Kept for proactive warning) -->
             <div id="anomalyAlert" class="anomaly-alert">
                 <p>&#9888; **ANOMALY DETECTED (TPR 94%):** Predicted access spike in the next <span id="alert-months"></span> months. Recommendation has been proactively shifted to a **Warmer Tier** to prevent high egress costs and latency penalties.</p>
             </div>
@@ -595,6 +564,14 @@
         // Global variable to hold the last optimization results for the bot to reference
         let currentOptimizationResults = null;
         
+        // Status Codes for Constraint Handling
+        const STATUS = {
+            SUCCESS: 'SUCCESS',
+            BUDGET_VIOLATION: 'BUDGET_VIOLATION',
+            LATENCY_VIOLATION: 'LATENCY_VIOLATION',
+            PHYSICAL_VIOLATION: 'PHYSICAL_VIOLATION' 
+        };
+
         // --- Helper Functions for Data Simulation ---
 
         // Simple utility to format numbers as currency
@@ -603,37 +580,30 @@
         // Data structure for simulated cloud options (Baseline: Standard Hot, Optimized: Tiered)
         const storageOptions = {
             AWS: {
-                standard: { tier: 'AWS (S3 Standard)', multiplier: 1.0, costFactor: 0.023 },
-                low_access: { tier: 'AWS (S3 Infrequent Access)', multiplier: 0.65, costFactor: 0.0125 },
-                archive: { tier: 'AWS (S3 Glacier Instant)', multiplier: 0.35, costFactor: 0.004 },
+                standard: { tier: 'AWS (S3 Standard)', multiplier: 1.0, costFactor: 0.023, maxLatencyReduction: 0.1 },
+                low_access: { tier: 'AWS (S3 Infrequent Access)', multiplier: 0.65, costFactor: 0.0125, maxLatencyReduction: 0.35 },
+                archive: { tier: 'AWS (S3 Glacier Instant)', multiplier: 0.35, costFactor: 0.004, maxLatencyReduction: 0.60 },
             },
             Azure: {
-                standard: { tier: 'Azure (Hot Blob Storage)', multiplier: 1.0, costFactor: 0.021 },
-                low_access: { tier: 'Azure (Cool Blob Storage)', multiplier: 0.68, costFactor: 0.012 },
-                archive: { tier: 'Azure (Archive Blob Storage)', multiplier: 0.30, costFactor: 0.002 },
+                standard: { tier: 'Azure (Hot Blob Storage)', multiplier: 1.0, costFactor: 0.021, maxLatencyReduction: 0.1 },
+                low_access: { tier: 'Azure (Cool Blob Storage)', multiplier: 0.68, costFactor: 0.012, maxLatencyReduction: 0.30 },
+                archive: { tier: 'Azure (Archive Blob Storage)', multiplier: 0.30, costFactor: 0.002, maxLatencyReduction: 0.70 },
             },
             GCP: {
-                standard: { tier: 'GCP (Standard Storage)', multiplier: 1.0, costFactor: 0.020 },
-                low_access: { tier: 'GCP (Nearline Storage)', multiplier: 0.60, costFactor: 0.01 },
-                archive: { tier: 'GCP (Coldline Storage)', multiplier: 0.40, costFactor: 0.007 },
+                standard: { tier: 'GCP (Standard Storage)', multiplier: 1.0, costFactor: 0.020, maxLatencyReduction: 0.1 },
+                low_access: { tier: 'GCP (Nearline Storage)', multiplier: 0.60, costFactor: 0.01, maxLatencyReduction: 0.40 },
+                archive: { tier: 'GCP (Coldline Storage)', multiplier: 0.40, costFactor: 0.007, maxLatencyReduction: 0.65 },
             }
         };
 
         // Core AI Decision Engine Simulation
         function calculateOptimization(dataSize, accessFrequency, budget, compliance, anomaly) {
             
-            // AI determines the optimal cloud based on multi-cloud logic
+            // --- 1. Initial Selection & Baseline Calculation ---
             let selectedCloud;
-            if (accessFrequency > 60) {
-                // Very high access, requires premium performance (Simulated preference)
-                selectedCloud = 'AWS'; 
-            } else if (dataSize > 300 && accessFrequency < 5) {
-                // Massive archive, needs ultra-low deep storage price (Simulated preference)
-                selectedCloud = 'GCP'; 
-            } else {
-                // Balanced/Moderate workload or moderate archive (Simulated preference)
-                selectedCloud = 'Azure';
-            }
+            if (accessFrequency > 60) { selectedCloud = 'AWS'; } 
+            else if (dataSize > 300 && accessFrequency < 5) { selectedCloud = 'GCP'; } 
+            else { selectedCloud = 'Azure'; }
             
             let options = storageOptions[selectedCloud];
             let finalRecommendation = options.standard;
@@ -641,73 +611,97 @@
             let latencyReduction = '≈10%';
             let rationale = `The AI selected **${selectedCloud}** as the optimal cloud provider for this workload. `;
 
-            // 1. Initial Tier Selection based on Access Frequency (ML Simulation)
+            // Initial Tier Selection based on Access Frequency (ML Simulation)
             if (accessFrequency < 10) {
                 finalRecommendation = options.archive;
                 baseMultiplier = 0.35;
-                latencyReduction = '≈15%';
+                latencyReduction = '≈' + (finalRecommendation.maxLatencyReduction * 100).toFixed(0) + '%';
                 rationale += `Extremely low access frequency indicates an archival workload, maximizing savings at the deepest tier (${finalRecommendation.tier}).`;
             } else if (accessFrequency < 50) {
                 finalRecommendation = options.low_access;
                 baseMultiplier = 0.65;
-                latencyReduction = '≈30%';
+                latencyReduction = '≈' + (finalRecommendation.maxLatencyReduction * 100).toFixed(0) + '%';
                 rationale += `Infrequent access pattern requires a cost-effective warm tier (${finalRecommendation.tier}) to balance retrieval speed and monthly storage cost.`;
             } else {
                  finalRecommendation = options.standard;
-                baseMultiplier = 1.0;
-                latencyReduction = '≈10%';
-                rationale += `High access frequency necessitates a standard tier (${finalRecommendation.tier}) to maintain low latency and avoid retrieval penalties.`;
+                 baseMultiplier = 1.0;
+                 latencyReduction = '≈' + (finalRecommendation.maxLatencyReduction * 100).toFixed(0) + '%';
+                 rationale += `High access frequency necessitates a standard tier (${finalRecommendation.tier}) to maintain low latency and avoid retrieval penalties.`;
             }
             
-            // 2. Anomaly Override (Proactive Mitigation)
-            if (anomaly && baseMultiplier < 1.0) { // If an anomaly is detected and we are currently in a cold tier
-                finalRecommendation = options.low_access; // Shift to a warmer tier (e.g., Nearline/Cool)
-                baseMultiplier = options.low_access.multiplier + 0.05; // Slightly less optimized cost
-                latencyReduction = '≈25%';
+            // Anomaly Override (Proactive Mitigation)
+            if (anomaly && baseMultiplier < 1.0) { 
+                finalRecommendation = options.low_access; 
+                baseMultiplier = options.low_access.multiplier + 0.05; 
+                latencyReduction = '≈' + (options.low_access.maxLatencyReduction * 100).toFixed(0) + '%';
                 rationale = `ANOMALY OVERRIDE: Predicted spike requires shifting from a cold tier to **${finalRecommendation.tier}** to avoid massive egress/retrieval penalty costs and maintain data availability.`;
             }
 
-            // 3. Compliance/DataSize Adjustment
+            // Compliance/DataSize Adjustment
             if (compliance.toUpperCase().includes('HIPAA')) {
-                // HIPAA often favors specialized tiers or regions, slightly increasing cost/reducing savings
                 baseMultiplier += 0.05;
-                latencyReduction = '≈20%';
                 rationale += ` Strict HIPAA policy factored in, slightly increasing the final solution cost due to specialized compliance overhead.`;
             }
 
-            // 4. Cost Calculation (Simple linear model)
-            // Baseline Cost (Simulated S3 Standard/Hot): $0.025/GB/mo or $25/TB/mo * dataSize
+            // Cost Calculation (Simple linear model)
             const baselineCost = 25 * dataSize + (accessFrequency * 0.05 * dataSize); 
-            
-            // Optimized Cost: Storage cost + (Access cost * multiplier)
             let optimizedCost = (finalRecommendation.costFactor * 1000 * dataSize) + (accessFrequency * 0.02 * dataSize * baseMultiplier);
+            let retrievalFee = (1 - baseMultiplier) * 500 * (dataSize / 100); 
+            let egressFee = (accessFrequency / 100) * 800 * (dataSize / 100);
             
-            // Egress/Retrieval Cost (Simulated, higher for archival tiers)
-            let retrievalFee = (1 - baseMultiplier) * 500; 
-            let egressFee = (accessFrequency / 100) * 800;
-            
-            if (anomaly) {
-                retrievalFee = 200; // Anomaly means we pre-emptively reduced the penalty
-            }
-
+            if (anomaly) { retrievalFee = 200 * (dataSize / 100); }
             optimizedCost += retrievalFee + egressFee;
 
-
-            // Final Savings
-            const savings = ((baselineCost - optimizedCost) / baselineCost) * 100;
+            // Final Savings (pre-constraint check)
+            let savings = ((baselineCost - optimizedCost) / baselineCost) * 100;
             
-            // Apply budget constraint penalty if needed
-            if (optimizedCost > budget) {
-                optimizedCost = budget; 
-                savings = 0;
-                finalRecommendation = options.standard;
-                rationale = `BUDGET VIOLATION: The optimal technical solution of **${finalRecommendation.tier}** exceeded the $${budget.toLocaleString()} budget. AI defaulted to the lowest-cost acceptable standard tier.`;
+            
+            // --- 2. Constraint Checking ---
+
+            // A. PHYSICAL_VIOLATION Check (Extreme Incompatibility)
+            if (dataSize > 4000 && accessFrequency > 500) {
+                return {
+                    status: STATUS.PHYSICAL_VIOLATION,
+                    rationale: `The combination of **${dataSize}TB** data volume and **${accessFrequency} Million** monthly reads exceeds the I/O capacity and scaling limits of *any* single cost-effective cloud storage tier. This architecture is physically impossible to provision without massive cost overruns or chronic performance failure.`,
+                    solution: `Implement a federated storage strategy (data sharding across multiple regions/clouds) or drastically reduce the access frequency (below 100M reads/month).`,
+                    minRequiredCost: 0
+                };
             }
 
+            // B. LATENCY_VIOLATION Check (High Access requiring fast tier, but AI chose slow one for cost)
+            const requiredMinTierMultiplier = (accessFrequency > 70) ? 0.9 : 0.65; // High access needs Hot or Cool
+            if (accessFrequency > 70 && finalRecommendation.multiplier < requiredMinTierMultiplier) { 
+                // This scenario means access is extremely high but the chosen tier is too slow (e.g., Coldline)
+                return {
+                    status: STATUS.LATENCY_VIOLATION,
+                    rationale: `Your high access frequency (**${accessFrequency}M reads/month**) demands a high-speed **Hot Tier** solution to prevent chronic latency and retrieval issues. The recommended tier (**${finalRecommendation.tier}**) cannot physically meet the required I/O performance for this workload, even if it met the budget.`,
+                    solution: `Increase the Max Monthly Budget to afford a Standard/Hot Tier solution, or manually decrease the Access Frequency requirement.`,
+                    minRequiredCost: 0
+                };
+            }
 
+            // C. BUDGET_VIOLATION Check
+            const minStorageCost = Math.min(
+                storageOptions.AWS.archive.costFactor, 
+                storageOptions.Azure.archive.costFactor, 
+                storageOptions.GCP.archive.costFactor
+            ) * 1000 * dataSize;
+            const absoluteMinimumMonthlyCost = minStorageCost + (accessFrequency * 0.005 * dataSize); 
+            
+            if (optimizedCost > budget) {
+                return {
+                    status: STATUS.BUDGET_VIOLATION,
+                    rationale: `The calculated cost for the optimal technical solution (**${finalRecommendation.tier}**) is **${formatCurrency(optimizedCost)}**, which exceeds your maximum monthly budget of **${formatCurrency(budget)}**.`,
+                    solution: `Increase the Max Monthly Budget to at least **${formatCurrency(absoluteMinimumMonthlyCost)}** (the cost of the absolute cheapest tier) or reduce the required Data Volume/Access Frequency.`,
+                    minRequiredCost: absoluteMinimumMonthlyCost 
+                };
+            }
+
+            // --- 3. SUCCESS Case ---
             return {
+                status: STATUS.SUCCESS,
                 providerTier: finalRecommendation.tier,
-                savings: Math.max(0, savings), // Savings cannot be negative
+                savings: Math.max(0, savings), // Ensure no negative savings reported
                 latencyReduction: latencyReduction,
                 baselineCost: baselineCost,
                 optimizedCost: optimizedCost,
@@ -719,11 +713,11 @@
             };
         }
 
-        // --- DOM Manipulation Functions (Cost Breakdown and Graph are unchanged) ---
+        // --- DOM Manipulation Functions ---
         function updateCostBreakdown(baseline, optimized, egress, retrieval) {
             const chartContainer = document.getElementById('costBreakdownChart');
             chartContainer.innerHTML = ''; 
-            const maxCost = Math.max(baseline, optimized) * 1.05;
+            const maxCost = Math.max(baseline, optimized) * 1.05 || 100;
 
             const data = [
                 { title: 'Baseline Cost', value: baseline, id: 'original', color: 'var(--accent-color)' },
@@ -749,11 +743,11 @@
         function updateFuturePredictionGraph(budget, optimizedCost, forecastWindow) {
             const canvas = document.getElementById('futureGraph');
             const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
+            const width = 1000; 
+            const height = 250; 
             
             const scale = window.devicePixelRatio;
-            canvas.style.width = width + 'px';
+            canvas.style.width = '100%';
             canvas.style.height = height + 'px';
             canvas.width = Math.floor(width * scale);
             canvas.height = Math.floor(height * scale);
@@ -764,11 +758,14 @@
             const months = parseInt(forecastWindow);
             const dataPoints = [];
             for (let i = 0; i <= months; i++) {
+                // Simulate slight linear cost creep over time
                 const factor = 1 + (i / months) * 0.1; 
                 dataPoints.push(optimizedCost * factor);
             }
 
-            const maxDataValue = Math.max(budget * 1.1, ...dataPoints);
+            // Ensure optimizedCost is valid for graphing (use budget if failure)
+            const graphOptimizedCost = optimizedCost > 0 ? optimizedCost : budget;
+            const maxDataValue = Math.max(budget * 1.1, ...dataPoints) || 1000;
             const padding = 30;
             const xStep = (width - 2 * padding) / months;
             const yMax = height - 2 * padding;
@@ -782,9 +779,11 @@
             
             ctx.fillStyle = 'var(--text-color)';
             ctx.textAlign = 'right';
-            ctx.fillText(formatCurrency(budget), padding - 5, (height - padding) - (budget / maxDataValue * yMax));
-
             const budgetY = (height - padding) - (budget / maxDataValue * yMax);
+            ctx.fillText(formatCurrency(budget), padding - 5, budgetY);
+
+            
+            // Draw Budget Line
             ctx.strokeStyle = 'var(--error-color)';
             ctx.setLineDash([5, 5]); 
             ctx.beginPath();
@@ -792,31 +791,33 @@
             ctx.lineTo(width - padding, budgetY);
             ctx.stroke();
 
-            ctx.strokeStyle = 'var(--success-color)';
-            ctx.lineWidth = 3;
-            ctx.setLineDash([]); 
-            ctx.beginPath();
-            
-            dataPoints.forEach((value, index) => {
-                const x = padding + index * xStep;
-                const y = (height - padding) - (value / maxDataValue * yMax);
-                if (index === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-                ctx.fillStyle = 'var(--success-color)';
+            // Draw Optimized Cost Line only if successful
+            if (optimizedCost > 0) {
+                ctx.strokeStyle = 'var(--success-color)';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([]); 
                 ctx.beginPath();
-                ctx.arc(x, y, 3, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            ctx.stroke();
-            
+                
+                dataPoints.forEach((value, index) => {
+                    const x = padding + index * xStep;
+                    const y = (height - padding) - (value / maxDataValue * yMax);
+                    if (index === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                    ctx.fillStyle = 'var(--success-color)';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.stroke();
+            }
+
             document.getElementById('graph-months').textContent = forecastWindow;
         }
 
-        // --- Chat Bot Logic ---
-
+        // --- Chat Bot Logic (Unchanged from V3) ---
         function appendMessage(sender, text, suggestions = []) {
             const messagesDiv = document.getElementById('bot-messages');
             const msgContainer = document.createElement('div');
@@ -845,7 +846,7 @@
             }
 
             messagesDiv.appendChild(msgContainer);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll to bottom
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; 
         }
 
         function handleBotInput(query) {
@@ -859,24 +860,30 @@
             const res = currentOptimizationResults;
             let responseText = "I'm sorry, I don't have a canned response for that specific question. Try one of the suggestions below.";
 
-            const q = query.toLowerCase();
+            // If system failed, the bot needs to focus on the reason
+            if (res.status !== STATUS.SUCCESS) {
+                responseText = `The AI was unable to complete the optimization due to a **${res.status.replace('_', ' ')}**. The primary reason was: ${res.rationale}. **Solution:** ${res.solution}`;
+            } else {
+                const q = query.toLowerCase();
 
-            if (q.includes('savings')) {
-                responseText = `The AI projects **${res.savings.toFixed(1)}%** in monthly savings by using the recommended tier: **${res.providerTier}**.`;
-            } else if (q.includes('anomaly')) {
-                if (res.anomaly) {
-                    responseText = `**Anomaly Status:** ACTIVE. The system detected a potential spike and preemptively selected a warmer tier (${res.providerTier}) to save you from huge retrieval penalties.`;
-                } else {
-                    responseText = `**Anomaly Status:** INACTIVE. Access patterns look stable, allowing us to maintain the deepest possible storage tier for maximum savings.`;
+                if (q.includes('savings')) {
+                    responseText = `The AI projects **${res.savings.toFixed(1)}%** in monthly savings by using the recommended tier: **${res.providerTier}**.`;
+                } else if (q.includes('anomaly')) {
+                    if (res.anomaly) {
+                        responseText = `**Anomaly Status:** ACTIVE. The system detected a potential spike and preemptively selected a warmer tier (${res.providerTier}) to save you from huge retrieval penalties.`;
+                    } else {
+                        responseText = `**Anomaly Status:** INACTIVE. Access patterns look stable, allowing us to maintain the deepest possible storage tier for maximum savings.`;
+                    }
+                } else if (q.includes('baseline')) {
+                    responseText = `Your baseline (unoptimized) monthly cost is estimated at **${formatCurrency(res.baselineCost)}**. The optimized cost is **${formatCurrency(res.optimizedCost)}**.`;
+                } else if (q.includes('cloud')) {
+                    const provider = res.providerTier.split(' ')[0];
+                    responseText = `The AI analyzed the workload and determined **${provider}** is the optimal cloud provider based on your inputs and cost models for the recommended tier.`;
+                } else if (q.includes('cost breakdown')) {
+                    responseText = `The current month's estimated cost breakdown includes: Storage: ${formatCurrency(res.optimizedCost - res.egressFee - res.retrievalFee)}, Egress Fees: ${formatCurrency(res.egressFee)}, Retrieval Fees: ${formatCurrency(res.retrievalFee)}.`;
                 }
-            } else if (q.includes('baseline')) {
-                responseText = `Your baseline (unoptimized) monthly cost is estimated at **${formatCurrency(res.baselineCost)}**. The optimized cost is **${formatCurrency(res.optimizedCost)}**.`;
-            } else if (q.includes('cloud')) {
-                const provider = res.providerTier.split(' ')[0];
-                responseText = `The AI analyzed the workload and determined **${provider}** is the optimal cloud provider based on your inputs and cost models for the recommended tier.`;
-            } else if (q.includes('cost breakdown')) {
-                responseText = `The current month's estimated cost breakdown includes: Storage: ${formatCurrency(res.optimizedCost - res.egressFee - res.retrievalFee)}, Egress Fees: ${formatCurrency(res.egressFee)}, Retrieval Fees: ${formatCurrency(res.retrievalFee)}.`;
             }
+
 
             // Simple delay for a more 'responsive' feel
             setTimeout(() => {
@@ -913,7 +920,7 @@
             const forecastWindow = document.getElementById('forecastWindow').value;
             const injectAnomaly = document.getElementById('injectAnomaly').checked;
 
-            // 2. Run the AI Simulation (Note: 'cloudFocus' parameter is removed)
+            // 2. Run the AI Simulation
             const results = calculateOptimization(
                 dataSize, 
                 accessFrequency, 
@@ -925,54 +932,102 @@
             // Store results globally for the bot
             currentOptimizationResults = results;
 
-            // 3. Display Results
-            document.getElementById('resultProvider').textContent = results.providerTier;
-            document.getElementById('resultSavings').textContent = `${results.savings.toFixed(1)}%`;
-            document.getElementById('resultLatency').textContent = results.latencyReduction;
+            // DOM elements
+            const violationAlert = document.getElementById('violationAlert');
+            const anomalyAlert = document.getElementById('anomalyAlert');
+            const provisionButton = document.getElementById('provisionButton');
+            const resultProvider = document.getElementById('resultProvider');
+            const resultSavings = document.getElementById('resultSavings');
+            const resultLatency = document.getElementById('resultLatency');
+            const resultExplanation = document.getElementById('resultExplanation');
+            const successColor = 'var(--success-color)';
+            const errorColor = 'var(--error-color)';
             
-            // Anomaly Alert logic
-            const alertElement = document.getElementById('anomalyAlert');
-            if (results.anomaly) {
-                alertElement.style.display = 'block';
-                document.getElementById('alert-months').textContent = forecastWindow;
+            // Reset colors and visibility
+            resultProvider.style.color = successColor;
+            resultSavings.style.color = successColor;
+            violationAlert.classList.add('hidden');
+            anomalyAlert.style.display = 'none';
+            provisionButton.disabled = false;
+            provisionButton.textContent = "Simulate Provisioning via Terraform (IaC) →";
+            
+            
+            if (results.status !== STATUS.SUCCESS) {
+                // --- VIOLATION HANDLING ---
+                violationAlert.classList.remove('hidden');
+                document.getElementById('violationMessage').innerHTML = `&#10060; **CRITICAL CONSTRAINT VIOLATION: ${results.status.replace('_', ' ')}**`;
+                document.getElementById('violationSolution').innerHTML = `**Reason:** ${results.rationale}<br><br>**Solution:** ${results.solution}`;
+                
+                // Update Metrics to show failure state
+                resultProvider.textContent = 'FAILURE';
+                resultSavings.textContent = 'N/A';
+                resultLatency.textContent = 'N/A';
+                resultProvider.style.color = errorColor;
+                resultSavings.style.color = errorColor;
+                resultLatency.style.color = errorColor;
+
+                // Disable provisioning
+                provisionButton.disabled = true;
+                provisionButton.textContent = "Provisioning Disabled (Violation)";
+
+                // Clear visualizations (or set to error state)
+                updateCostBreakdown(0, 0, 0, 0); 
+                updateFuturePredictionGraph(budget, budget, forecastWindow); 
+                
+                // Update XAI Explanation
+                resultExplanation.innerHTML = `
+                    The optimization loop terminated due to a **${results.status.replace('_', ' ')}** error. The AI cannot proceed with a viable, compliant recommendation given the current constraints. Please review the violation message above. The absolute minimum cost to meet the data requirement is **${formatCurrency(results.minRequiredCost)}**.
+                `;
+
             } else {
-                alertElement.style.display = 'none';
+                // --- SUCCESS HANDLING (Existing Logic) ---
+                
+                // 3. Display Results
+                resultProvider.textContent = results.providerTier;
+                resultSavings.textContent = `${results.savings.toFixed(1)}%`;
+                resultLatency.textContent = results.latencyReduction;
+                resultLatency.style.color = successColor;
+                
+                // Anomaly Alert logic
+                if (results.anomaly) {
+                    anomalyAlert.style.display = 'block';
+                    document.getElementById('alert-months').textContent = forecastWindow;
+                }
+
+                // 4. Update Explainable AI (XAI) text
+                resultExplanation.innerHTML = `
+                    The AI performed multi-objective optimization over a **${forecastWindow}-month** horizon. It found the optimal balance between cost, latency, 
+                    and the **${compliance.toUpperCase()}** compliance requirements based on the predicted **${accessFrequency}M** monthly reads. 
+                    **Decision Rationale:** ${results.rationale}
+                `;
+                
+                // 5. Update Visualizations
+                updateCostBreakdown(
+                    results.baselineCost, 
+                    results.optimizedCost, 
+                    results.egressFee, 
+                    results.retrievalFee
+                );
+                
+                setTimeout(() => {
+                    updateFuturePredictionGraph(budget, results.optimizedCost, forecastWindow);
+                }, 100);
+
+                // 6. Provisioning Button Logic
+                document.getElementById('provisionButton').onclick = function() {
+                    const modal = document.getElementById('provisionModal');
+                    document.getElementById('modal-text').textContent = 
+                        `IaC Automation successful. ${dataSize}TB of storage provisioned to ${results.providerTier} with a ${results.savings.toFixed(1)}% projected saving.`;
+                    modal.style.display = 'flex';
+                };
             }
-
-            // 4. Update Explainable AI (XAI) text
-            document.getElementById('resultExplanation').innerHTML = `
-                The AI performed multi-objective optimization over a **${forecastWindow}-month** horizon. It found the optimal balance between cost, latency, 
-                and the **${compliance.toUpperCase()}** compliance requirements based on the predicted **${accessFrequency}M** monthly reads. 
-                **Decision Rationale:** ${results.rationale}
-            `;
-
-            // 5. Update Visualizations
-            updateCostBreakdown(
-                results.baselineCost, 
-                results.optimizedCost, 
-                results.egressFee, 
-                results.retrievalFee
-            );
-            
-            // Use window.setTimeout to ensure canvas is rendered before drawing
-            setTimeout(() => {
-                updateFuturePredictionGraph(budget, results.optimizedCost, forecastWindow);
-            }, 100);
-
-            // 6. Provisioning Button Logic
-            document.getElementById('provisionButton').onclick = function() {
-                const modal = document.getElementById('provisionModal');
-                document.getElementById('modal-text').textContent = 
-                    `IaC Automation successful. ${dataSize}TB of storage provisioned to ${results.providerTier} with a ${results.savings.toFixed(1)}% projected saving.`;
-                modal.style.display = 'flex';
-            };
 
 
             // 7. Show the Output section and scroll
             document.getElementById('output').classList.remove('hidden');
             document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
             
-            // Reset chat history
+            // Reset chat history and give initial guidance
             document.getElementById('bot-messages').innerHTML = '';
             appendMessage('bot', "Optimization complete! I've analyzed the new results. How can I help?", [
                 'What are the projected savings?', 
